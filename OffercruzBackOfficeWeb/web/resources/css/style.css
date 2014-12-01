@@ -1,0 +1,107 @@
+/* 
+    Document   : style.css
+    Created on : 21-11-2012, 06:35:15 PM
+    Author     : Olvinho
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+body { 
+    margin: 0;
+    padding: 0;
+    background-image: url("../resources/images/fondorelleno.jpg");
+}
+.ui-widget {
+    font-size: 16px !important;
+}
+
+#page{
+    /*border-left: 1px solid #252525;
+    border-right: 1px solid #252525;
+    border-top: 1px solid #252525;
+    border-bottom: 1px solid #252525;*/
+    margin: 0 auto;
+
+    width: 90%;
+}
+#filter {
+    width: 500px !important;
+
+}
+
+
+.myPanel td { 
+    vertical-align: top; 
+}
+
+.icon-add{
+    background-image: url("#{resource['images/add16x16.png']}") !important;
+}
+.icon-edit{
+    background-image: url("#{resource['images/edit16x16.png']}") !important;
+}.icon-delete{
+    background-image: url("#{resource['images/delete16x16.png']}") !important;
+}
+
+.icon-save{
+    background-image: url("#{resource['images/save16x16.png']}") !important;
+}
+
+.icon-cancel{
+    background-image: url("#{resource['images/cancel16x16.png']}") !important;
+}
+.icon-ok{
+    background-image: url("#{resource['images/ok16x16.png']}") !important;
+}
+
+.icon-user{
+    background-image: url("#{resource['images/user16x16.png']}") !important;
+}
+
+.icon-key{
+    background-image: url("#{resource['images/key16x16.png']}") !important;
+
+}
+
+.icon-search{
+    background-image: url("#{resource['images/search16x16.png']}") !important;
+
+}
+.icon-tick{
+    background-image: url("#{resource['images/tick16x16.png']}") !important;
+
+}
+
+.icon-stack{
+    background-image: url("#{resource['images/key16x16.png']}") !important;
+
+}
+
+.icon-clean{
+    background-image: url("#{resource['images/brush16x16.png']}") !important;
+
+}
+
+.topAligned {
+    vertical-align: top;
+}
+
+.ui-dashboard-column
+{
+    width: 100%;
+}
+
+.titulo{
+    color: white;
+    text-align: center;
+}
+
+.panelNota td {
+    vertical-align: top;
+}
+
+.centerStyle{
+    text-align: center;
+}
+
+

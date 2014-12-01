@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"  >
+    <h:head>
+        <title>Iniciar Sesi&oacute;n</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="template/layout.xhtml">
+            <ui:define name="content">
+                <p:growl id="growl" showDetail="true" life="3000" />   
+                <h:form>  
+                    <div align="center">
+                        <br/>
+                        <br/>
+                        <h:panelGrid columns="2" cellpadding="5">  
+                            <h:outputLabel for="username" value="Nombre de Usuario:" />  
+                            <p:inputText value="#{loginBean.currentUser.login}"   
+                            id="username" requiredMessage="Debe introducir nombre de usuario" required="true" label="Nombre de usuario" />  
+                            <h:outputLabel for="password" value="Contrase&ntilde;a:" />  
+                            <h:inputSecret value="#{loginBean.currentUser.password}"   
+                                           id="password" class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all" requiredMessage="Debe introducir una contrase&ntilde;a"  required="true" label="Contrase&ntilde;a" />  
+                            <h:panelGroup />
+                            <p:commandButton  ajax="false" id="loginButton" action="#{loginBean.doLogin()}" value="Login" update=":growl" type="submit"/>      
+                        </h:panelGrid> 
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20-nov-2014 4:32:22 by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+  <class catalog="dboffercruz" name="bo.com.offercruz.entidades.Oferta" table="oferta">
+    <id name="id" type="java.lang.Integer">
+      <column name="Id"/>
+      <generator class="identity"/>
+    </id>
+    <many-to-one class="bo.com.offercruz.entidades.Imagen" fetch="select" name="imagen">
+      <column name="IdImagen"/>
+    </many-to-one>
+    <many-to-one class="bo.com.offercruz.entidades.Categoria" fetch="select" name="categoria">
+      <column name="IdCategoria" not-null="true"/>
+    </many-to-one>
+    <many-to-one class="bo.com.offercruz.entidades.Empresa" fetch="select" name="empresa">
+      <column name="IdEmpresa" not-null="true"/>
+    </many-to-one>
+    <property name="descripcion" type="string">
+      <column name="Descripcion" not-null="true"/>
+    </property>
+    <property name="nombre" type="string">
+      <column length="50" name="Nombre" not-null="true"/>
+    </property>
+    <property name="estado" type="int">
+      <column name="Estado" not-null="true"/>
+    </property>
+    <property name="fechaCreacion" type="timestamp">
+      <column length="19" name="FechaCreacion" not-null="true"/>
+    </property>
+    <property name="fechaModificacion" type="timestamp">
+      <column length="19" name="FechaModificacion" not-null="true"/>
+    </property>
+    <property name="tipoOferta" type="int">
+      <column name="TipoOferta" not-null="true"/>
+    </property>
+    <property name="precioUnitario" type="java.lang.Double">
+      <column name="PrecioUnitario" precision="22" scale="0"/>
+    </property>
+    <set fetch="select" inverse="true" lazy="true" name="detallecontenidos" table="detallecontenido">
+      <key>
+        <column name="IdOferta" not-null="true"/>
+      </key>
+      <one-to-many class="bo.com.offercruz.entidades.Detallecontenido"/>
+    </set>
+    <set fetch="select" inverse="true" lazy="true" name="detallecontenidos_1" table="detallecontenido">
+      <key>
+        <column name="IdOferta" not-null="true"/>
+      </key>
+      <one-to-many class="bo.com.offercruz.entidades.Detallecontenido"/>
+    </set>
+    <set fetch="select" inverse="true" lazy="true" name="detallesolicituds" table="detallesolicitud">
+      <key>
+        <column name="IdOferta" not-null="true"/>
+      </key>
+      <one-to-many class="bo.com.offercruz.entidades.Detallesolicitud"/>
+    </set>
+  </class>
+</hibernate-mapping>

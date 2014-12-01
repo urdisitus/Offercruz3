@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20-nov-2014 4:32:22 by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+  <class catalog="dboffercruz" name="bo.com.offercruz.entidades.Solicitud" table="solicitud">
+    <id name="id" type="java.lang.Integer">
+      <column name="Id"/>
+      <generator class="identity"/>
+    </id>
+    <many-to-one class="bo.com.offercruz.entidades.Cliente" fetch="select" name="cliente">
+      <column name="IdCliente" not-null="true"/>
+    </many-to-one>
+    <many-to-one class="bo.com.offercruz.entidades.Empresa" fetch="select" name="empresa">
+      <column name="IdEmpresa" not-null="true"/>
+    </many-to-one>
+    <many-to-one class="bo.com.offercruz.entidades.Contenido" fetch="select" name="contenido">
+      <column name="IdContenido"/>
+    </many-to-one>
+    <property name="estado" type="int">
+      <column name="Estado" not-null="true"/>
+    </property>
+    <property name="fechaCreacion" type="timestamp">
+      <column length="19" name="FechaCreacion" not-null="true"/>
+    </property>
+    <property name="fechaModificacion" type="timestamp">
+      <column length="19" name="FechaModificacion" not-null="true"/>
+    </property>
+    <property name="telefonoClienteTransaccion" type="string">
+      <column length="10" name="TelefonoClienteTransaccion" not-null="true"/>
+    </property>
+    <property name="totalEstimadoSolicitud" type="java.lang.Double">
+      <column name="TotalEstimadoSolicitud" precision="22" scale="0"/>
+    </property>
+    <set fetch="select" inverse="true" lazy="true" name="detallesolicituds" table="detallesolicitud">
+      <key>
+        <column name="IdSolicitud" not-null="true"/>
+      </key>
+      <one-to-many class="bo.com.offercruz.entidades.Detallesolicitud"/>
+    </set>
+  </class>
+</hibernate-mapping>

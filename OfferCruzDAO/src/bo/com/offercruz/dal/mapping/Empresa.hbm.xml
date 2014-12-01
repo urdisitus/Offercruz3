@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20-nov-2014 4:41:14 by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="bo.com.offercruz.entidades.Empresa" table="empresa" catalog="dboffercruz">
+        <id name="id" type="java.lang.Integer">
+            <column name="Id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="imagen" class="bo.com.offercruz.entidades.Imagen" fetch="select">
+            <column name="IdLogotipo" />
+        </many-to-one>
+        <many-to-one name="usuario" class="bo.com.offercruz.entidades.Usuario" fetch="select">
+            <column name="IdUsuario" not-null="true" />
+        </many-to-one>
+        <property name="estado" type="int">
+            <column name="Estado" not-null="true" />
+        </property>
+        <property name="fechaCreacion" type="timestamp">
+            <column name="FechaCreacion" length="19" not-null="true" />
+        </property>
+        <property name="fechaModificacion" type="timestamp">
+            <column name="FechaModificacion" length="19" not-null="true" />
+        </property>
+        <property name="razonSocial" type="string">
+            <column name="RazonSocial" length="50" not-null="true" />
+        </property>
+        <property name="slogan" type="string">
+            <column name="Slogan" length="100" />
+        </property>
+        <property name="mision" type="string">
+            <column name="Mision" length="100" />
+        </property>
+        <property name="vision" type="string">
+            <column name="Vision" length="100" />
+        </property>
+        <property name="telefono" type="string">
+            <column name="Telefono" length="10" />
+        </property>
+        <property name="direccion" type="string">
+            <column name="Direccion" length="100" />
+        </property>
+        <property name="tipoSociedad" type="string">
+            <column name="TipoSociedad" length="30" />
+        </property>
+        <property name="fechaApertura" type="timestamp">
+            <column name="FechaApertura" length="19" />
+        </property>
+        <property name="nit" type="string">
+            <column name="Nit" length="50" />
+        </property>
+        <property name="tipoOferta" type="int">
+            <column name="TipoOferta" not-null="true" />
+        </property>
+        <property name="fax" type="string">
+            <column name="Fax" length="50" />
+        </property>
+        <set name="ofertas" table="oferta" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="IdEmpresa" not-null="true" />
+            </key>
+            <one-to-many class="bo.com.offercruz.entidades.Oferta" />
+        </set>
+        <set name="categorias" table="empresacategoria" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="idEmpresa" not-null="true" />
+            </key>
+            <many-to-many entity-name="bo.com.offercruz.entidades.Categoria">
+                <column name="idCategoria" not-null="true" />
+            </many-to-many>
+        </set>
+        <set name="subscripcions" table="subscripcion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="IdEmpresa" not-null="true" />
+            </key>
+            <one-to-many class="bo.com.offercruz.entidades.Subscripcion" />
+        </set>
+        <set name="solicituds" table="solicitud" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="IdEmpresa" not-null="true" />
+            </key>
+            <one-to-many class="bo.com.offercruz.entidades.Solicitud" />
+        </set>
+    </class>
+</hibernate-mapping>

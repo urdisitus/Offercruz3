@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20-nov-2014 4:32:22 by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+  <class catalog="dboffercruz" name="bo.com.offercruz.entidades.Subscripcion" table="subscripcion">
+    <id name="id" type="java.lang.Integer">
+      <column name="Id"/>
+      <generator class="identity"/>
+    </id>
+    <many-to-one class="bo.com.offercruz.entidades.Cliente" fetch="select" name="cliente">
+      <column name="IdCliente" not-null="true"/>
+    </many-to-one>
+    <many-to-one class="bo.com.offercruz.entidades.Empresa" fetch="select" name="empresa">
+      <column name="IdEmpresa" not-null="true"/>
+    </many-to-one>
+    <property name="fechaSubscripcion" type="timestamp">
+      <column length="19" name="FechaSubscripcion" not-null="true"/>
+    </property>
+    <property name="estado" type="int">
+      <column name="Estado" not-null="true"/>
+    </property>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20-nov-2014 4:32:22 by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+  <class catalog="dboffercruz" name="bo.com.offercruz.entidades.Imagen" table="imagen">
+    <id name="id" type="java.lang.Integer">
+      <column name="Id"/>
+      <generator class="identity"/>
+    </id>
+    <property name="nombre" type="string">
+      <column length="250" name="Nombre" not-null="true"/>
+    </property>
+    <property name="ancho" type="java.lang.Integer">
+      <column name="Ancho"/>
+    </property>
+    <property name="alto" type="java.lang.Integer">
+      <column name="Alto"/>
+    </property>
+    <property name="fechaCreacion" type="timestamp">
+      <column length="19" name="FechaCreacion" not-null="true"/>
+    </property>
+    <property name="fechaModificacion" type="timestamp">
+      <column length="19" name="FechaModificacion" not-null="true"/>
+    </property>
+    <property name="estado" type="int">
+      <column name="Estado" not-null="true"/>
+    </property>
+    <property name="imagenFisica" type="string">
+      <column length="65535" name="ImagenFisica" not-null="true"/>
+    </property>
+    <set fetch="select" inverse="true" lazy="true" name="ofertas" table="oferta">
+      <key>
+        <column name="IdImagen"/>
+      </key>
+      <one-to-many class="bo.com.offercruz.entidades.Oferta"/>
+    </set>
+    <set fetch="select" inverse="true" lazy="true" name="empresas" table="empresa">
+      <key>
+        <column name="IdLogotipo"/>
+      </key>
+      <one-to-many class="bo.com.offercruz.entidades.Empresa"/>
+    </set>
+    <set fetch="select" inverse="true" lazy="true" name="empresas_1" table="empresa">
+      <key>
+        <column name="IdLogotipo"/>
+      </key>
+      <one-to-many class="bo.com.offercruz.entidades.Empresa"/>
+    </set>
+    <set fetch="select" inverse="true" lazy="true" name="clientes" table="cliente">
+      <key>
+        <column name="IdImagen" not-null="true"/>
+      </key>
+      <one-to-many class="bo.com.offercruz.entidades.Cliente"/>
+    </set>
+    <set fetch="select" inverse="false" lazy="true" name="contenidos" table="imagecontenido">
+      <key>
+        <column name="idImagen" not-null="true"/>
+      </key>
+      <many-to-many entity-name="bo.com.offercruz.entidades.Contenido">
+        <column name="idContenido" not-null="true"/>
+      </many-to-many>
+    </set>
+    <set fetch="select" inverse="true" lazy="true" name="clientes_1" table="cliente">
+      <key>
+        <column name="IdImagen" not-null="true"/>
+      </key>
+      <one-to-many class="bo.com.offercruz.entidades.Cliente"/>
+    </set>
+    <set fetch="select" inverse="true" lazy="true" name="ofertas_1" table="oferta">
+      <key>
+        <column name="IdImagen"/>
+      </key>
+      <one-to-many class="bo.com.offercruz.entidades.Oferta"/>
+    </set>
+  </class>
+</hibernate-mapping>

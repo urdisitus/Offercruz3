@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20-nov-2014 4:32:22 by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+  <class catalog="dboffercruz" name="bo.com.offercruz.entidades.Usuario" table="usuario">
+    <id name="id" type="java.lang.Integer">
+      <column name="Id"/>
+      <generator class="identity"/>
+    </id>
+    <many-to-one class="bo.com.offercruz.entidades.Perfil" fetch="select" name="perfil">
+      <column name="IdPerfil" not-null="true"/>
+    </many-to-one>
+    <property name="password" type="string">
+      <column length="100" name="Password" not-null="true"/>
+    </property>
+    <property name="login" type="string">
+      <column length="20" name="Login" not-null="true" unique="true"/>
+    </property>
+    <property name="fechaModificacion" type="timestamp">
+      <column length="19" name="FechaModificacion" not-null="true"/>
+    </property>
+    <property name="estado" type="int">
+      <column name="Estado" not-null="true"/>
+    </property>
+    <property name="fechaCreacion" type="timestamp">
+      <column length="19" name="FechaCreacion" not-null="true"/>
+    </property>
+    <property name="tipo" type="int">
+      <column name="Tipo" not-null="true"/>
+    </property>
+    <property name="correoElectronico" type="string">
+      <column length="50" name="CorreoElectronico" not-null="true"/>
+    </property>
+    <set fetch="select" inverse="true" lazy="true" name="empresas" table="empresa">
+      <key>
+        <column name="IdUsuario" not-null="true"/>
+      </key>
+      <one-to-many class="bo.com.offercruz.entidades.Empresa"/>
+    </set>
+    <set fetch="select" inverse="true" lazy="true" name="clientes" table="cliente">
+      <key>
+        <column name="IdUsuario" not-null="true"/>
+      </key>
+      <one-to-many class="bo.com.offercruz.entidades.Cliente"/>
+    </set>
+    <set fetch="select" inverse="true" lazy="true" name="clientes_1" table="cliente">
+      <key>
+        <column name="IdUsuario" not-null="true"/>
+      </key>
+      <one-to-many class="bo.com.offercruz.entidades.Cliente"/>
+    </set>
+    <set fetch="select" inverse="true" lazy="true" name="empresas_1" table="empresa">
+      <key>
+        <column name="IdUsuario" not-null="true"/>
+      </key>
+      <one-to-many class="bo.com.offercruz.entidades.Empresa"/>
+    </set>
+  </class>
+</hibernate-mapping>
