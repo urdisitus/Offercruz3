@@ -61,19 +61,21 @@ public class LoginBean implements java.io.Serializable {
 
     public String doLogin() throws Exception {
         IUsuarioBO usuarioBO = FactoriaObjetosNegocio.getInstance().getIUsuarioBO();
-        
-       // currentUser.setPassword(usuarioBO.encriptar(currentUser.getPassword()));
+
+        currentUser.setPassword(usuarioBO.encriptar(currentUser.getPassword()));
         Usuario result = usuarioBO.loguear(currentUser.getLogin(), currentUser.getPassword());
         if (result != null) {
             loggedIn = true;
             currentUser = result;
-            return "/index.jsf";
+            return "/loginsuccess.jsf";
         } else {
             FacesMessage msg;
             msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Error de Login", "Nombre de usuario o contrasena invalidos");
             FacesContext.getCurrentInstance().addMessage(null, msg);
-            return "/index.jsf";
+            return "";
         }
+
+//        return "/loginsuccess.jsf";
     }
 
     /*
@@ -106,6 +108,13 @@ public class LoginBean implements java.io.Serializable {
         }
         return r;
     }
+
+    public String user = "usuario";
+    public String perfil = "perfil";
+    public String contenido = "contenido";
+    public String empresa = "empresa";
+    public String oferta = "oferta";
+    public String categoria = "categoria";
 
     public boolean verificarPermiso(String comandoPermiso) {
         boolean r = FactoriaObjetosNegocio.getInstance().getIPerfilBO().verificarPermiso(comandoPermiso, currentUser);
