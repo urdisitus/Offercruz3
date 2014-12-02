@@ -67,12 +67,12 @@ public class LoginBean implements java.io.Serializable {
         if (result != null) {
             loggedIn = true;
             currentUser = result;
-            return "/loginsuccess.jsf";
+            return "/index.jsf";
         } else {
             FacesMessage msg;
             msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Error de Login", "Nombre de usuario o contrasena invalidos");
             FacesContext.getCurrentInstance().addMessage(null, msg);
-            return "";
+            return "/index.jsf";
         }
     }
 
