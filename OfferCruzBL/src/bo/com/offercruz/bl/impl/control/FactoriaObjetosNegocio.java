@@ -6,6 +6,7 @@
 package bo.com.offercruz.bl.impl.control;
 
 import bo.com.offercruz.bl.contratos.ICategoriaBO;
+import bo.com.offercruz.bl.contratos.IContenidoBO;
 import bo.com.offercruz.bl.contratos.IEmpresaBO;
 import bo.com.offercruz.bl.contratos.IImagenBO;
 import bo.com.offercruz.bl.contratos.IOfertaBO;
@@ -13,6 +14,7 @@ import bo.com.offercruz.bl.contratos.IPerfilBO;
 import bo.com.offercruz.bl.contratos.IPermisoBO;
 import bo.com.offercruz.bl.contratos.IUsuarioBO;
 import bo.com.offercruz.bl.impl.CategoriaBO;
+import bo.com.offercruz.bl.impl.ContenidoBO;
 import bo.com.offercruz.bl.impl.EmpresaBO;
 import bo.com.offercruz.bl.impl.ImagenBO;
 import bo.com.offercruz.bl.impl.OfertaBO;
@@ -48,6 +50,15 @@ public class FactoriaObjetosNegocio {
             categoriaBO = new CategoriaBO();
         }
         return categoriaBO;
+    }
+    
+    private IContenidoBO contenidoBO;
+
+    public IContenidoBO getIContenidoBO() {
+        if (contenidoBO == null) {
+            contenidoBO = new ContenidoBO();
+        }
+        return contenidoBO;
     }
     
     private IOfertaBO ofertaBO;

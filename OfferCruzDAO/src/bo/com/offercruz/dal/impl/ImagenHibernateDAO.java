@@ -14,5 +14,5 @@ import bo.com.offercruz.entidades.Imagen;
  * @author Ernesto
  */
 public class ImagenHibernateDAO extends DAOGenericoHibernate<Imagen, Integer> implements IImagenDAO {
-
+    
 }

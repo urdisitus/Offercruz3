@@ -42,8 +42,8 @@ public class ImagenBO extends ObjetoNegocioGenerico<Imagen, Integer, IImagenDAO>
     }
 
     @Override
-    protected void validar(Imagen entity) {
-
+    protected void preActualizar(Imagen entidad) {
+        entidad.setFechaModificacion(new Date());
     }
 
     private static BufferedImage resizeImage(BufferedImage originalImage, int IMG_WIDTH) {
@@ -127,7 +127,7 @@ public class ImagenBO extends ObjetoNegocioGenerico<Imagen, Integer, IImagenDAO>
         try {
             BufferedImage bi = ImageIO.read(new File(direccion));
             im.setAlto(bi.getHeight());
-            im.setAncho(bi.getWidth());            
+            im.setAncho(bi.getWidth());
             im.setImagenFisica(imageToString(bi, direccion));
             return im;
         } catch (IOException ex) {

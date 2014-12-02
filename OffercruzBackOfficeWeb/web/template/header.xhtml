@@ -14,8 +14,7 @@
                 <p:menubar id="mainmenu">  
                     <p:menuitem value="Inicio"  url="/index.xhtml" />
                     <p:submenu rendered="#{loginBean.loggedIn}" label="Gesti&oacute;n de usuario">
-                        <p:menuitem rendered="#{loginBean.verificarPermiso(permisoBean.user)}" value="Usuario"  url="/index.xhtml" />
-                        <p:menuitem rendered="#{loginBean.verificarPermiso(permisoBean.perfil)}" value="Perfil"  url="/index.xhtml" />
+                        <p:menuitem  value="Usuario"  url="/gestion/usuarios/usuarios.xhtml" />
                     </p:submenu>
                     <p:menuitem value="Iniciar Sesi&oacute;n" rendered="#{!loginBean.loggedIn}"  url="/login.xhtml" />
                     <p:menuitem value="Cerrar Sesi&oacute;n" rendered="#{loginBean.loggedIn}" url="/closelogin.xhtml"/>

@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package offercruzbl;
 
 import bo.com.offercruz.bl.contratos.IImagenBO;
 import bo.com.offercruz.bl.impl.ImagenBO;
+import bo.com.offercruz.bl.impl.UsuarioBO;
 import bo.com.offercruz.bl.impl.control.FactoriaObjetosNegocio;
 import bo.com.offercruz.dal.imp.control.FactoriaDAOManager;
 import bo.com.offercruz.entidades.Imagen;
@@ -28,7 +28,8 @@ public class OfferCruzBL {
 //        bo.insertar(im);
 //        Imagen imm = bo.getImagenRedimencionada(1, 100);
 //        System.out.println(imm.getImagenFisica());
-        
+        String encrip = FactoriaObjetosNegocio.getInstance().getIUsuarioBO().encriptar("admin");
+        System.out.println(encrip);
     }
-    
+
 }

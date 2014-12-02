@@ -3,24 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package bo.com.offercruz.beans;
 
+package bo.com.offercruz.beans;
 import bo.com.offercruz.bl.contratos.IUsuarioBO;
 import bo.com.offercruz.bl.impl.control.FactoriaObjetosNegocio;
 import bo.com.offercruz.entidades.Perfil;
 import bo.com.offercruz.entidades.Usuario;
 import bo.com.offercruz.utils.MailHelper;
-import javax.annotation.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 
 /**
  *
  * @author Ernesto
  */
-@ManagedBean
-@SessionScoped
-public class UsuarioBean extends BeanGenerico<Usuario, IUsuarioBO> {
 
+@ManagedBean
+@RequestScoped
+public class UsuarioBean extends  BeanGenerico<Usuario, IUsuarioBO>{
     private int idPerfil;
 
     /**
