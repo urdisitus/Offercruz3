@@ -201,6 +201,27 @@ public abstract class ObjetoNegocioGenerico<T, ID extends Serializable, U extend
             }
         });
     }
+    
+    public boolean verificarPermiso(int codigo, Usuario usuario) {
+        if (usuario == null) {
+            return false;
+        }
+
+        if (usuario.getPerfil() == null) {
+            return false;
+        }
+
+        if (usuario.getPerfil().getId() == null) {
+            return false;
+        }
+        List<Permiso> permisos = getDaoManager().getPermisoDAO().obtenerPermisos(usuario.getPerfil().getId());
+        for (Permiso permiso : permisos) {
+            if (permiso.getComando().equals(comandoPermiso)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public boolean verificarPermiso(String comandoPermiso, Usuario usuario) {
         if (usuario == null) {

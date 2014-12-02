@@ -14,7 +14,11 @@
                 <p:menubar id="mainmenu">  
                     <p:menuitem value="Inicio"  url="/index.xhtml" />
                     <p:submenu rendered="#{loginBean.loggedIn}" label="Gesti&oacute;n de usuario">
-                        <p:menuitem  value="Usuario"  url="/gestion/usuarios/usuarios.xhtml" />
+                        <p:menuitem rendered="#{loginBean.verificarPermiso(1000)}"  value="Usuario"  url="/gestion/usuarios/usuarios.xhtml" />
+                        <p:menuitem rendered="#{loginBean.verificarPermiso(2000)}"  value="Perfil"  url="/gestion/usuarios/usuarios.xhtml" />                        
+                    </p:submenu>
+                    <p:submenu rendered="#{loginBean.loggedIn}" label="Gesti&oacute;n de empresa">
+                        <p:menuitem rendered="#{loginBean.verificarPermiso(3000)}"  value="Categoria"  url="/gestion/usuarios/usuarios.xhtml" />
                     </p:submenu>
                     <p:menuitem value="Iniciar Sesi&oacute;n" rendered="#{!loginBean.loggedIn}"  url="/login.xhtml" />
                     <p:menuitem value="Cerrar Sesi&oacute;n" rendered="#{loginBean.loggedIn}" url="/closelogin.xhtml"/>

@@ -94,11 +94,11 @@ public class LoginBean implements java.io.Serializable {
         return true;
     }
 
-    public boolean solicitarPermiso(String comandoPermiso) throws IOException {
+    public boolean solicitarPermiso(int codigoPermiso) throws IOException {
         boolean r = solicitarPermisoLogin();
         if (r) {
             //Permiso si usuario validado
-            r = FactoriaObjetosNegocio.getInstance().getIPerfilBO().verificarPermiso(comandoPermiso, currentUser);
+            r = FactoriaObjetosNegocio.getInstance().getIPerfilBO().verificarPermiso(codigoPermiso, currentUser);
             if (!r) {
                 //Redirecciono acceso denegado
                 ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -108,16 +108,9 @@ public class LoginBean implements java.io.Serializable {
         }
         return r;
     }
-
-    public String user = "usuario";
-    public String perfil = "perfil";
-    public String contenido = "contenido";
-    public String empresa = "empresa";
-    public String oferta = "oferta";
-    public String categoria = "categoria";
-
-    public boolean verificarPermiso(String comandoPermiso) {
-        boolean r = FactoriaObjetosNegocio.getInstance().getIPerfilBO().verificarPermiso(comandoPermiso, currentUser);
+    
+    public boolean verificarPermiso(int codigoPermiso) {
+        boolean r = FactoriaObjetosNegocio.getInstance().getIPerfilBO().verificarPermiso(codigoPermiso, currentUser);
         return r;
     }
 }

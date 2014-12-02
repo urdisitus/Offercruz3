@@ -124,30 +124,30 @@ public class PerfilBean  extends  BeanGenerico<Perfil, IPerfilBO>{
         return false;
     }
     
-    public void seleccionarRolPermisos(Rol entidad) {
-        this.permisosSeleccionado =  entidad;
-        crearArbolPermisos(entidad);
-    }
+//    public void seleccionarRolPermisos(Rol entidad) {
+//        this.permisosSeleccionado =  entidad;
+//        crearArbolPermisos(entidad);
+//    }
     
-    private void crearArbolPermisos(Perfil rol) {
-        List<Perfil> raiz = getObjetoNegocio().obtenerTodos();
-        //System.out.println("Longitud de la lista " + raiz.size());
-        raizPermisos = new MyTreeNode("raiz", null);
-        //raizPermisos.setExpanded(true);
-        TreeNode treeControlTotal = new MyTreeNode(raiz.get(0), raizPermisos);
-        treeControlTotal.setExpanded(true);
+//    private void crearArbolPermisos(Perfil rol) {
+//        List<Perfil> raiz = getObjetoNegocio().obtenerTodos();
+//        //System.out.println("Longitud de la lista " + raiz.size());
+//        raizPermisos = new MyTreeNode("raiz", null);
+//        //raizPermisos.setExpanded(true);
+//        TreeNode treeControlTotal = new MyTreeNode(raiz.get(0), raizPermisos);
+//        treeControlTotal.setExpanded(true);
+//
+//        CrearPermisosR(raiz.get(0), treeControlTotal);
+//    }
 
-        CrearPermisosR(raiz.get(0), treeControlTotal);
-    }
-
-    private void CrearPermisosR(RolPermiso padre, TreeNode treePadre) {
-        List<RolPermiso> hijos = getObjetoNegocio().getPermisos(padre.getId().getIdRol(), padre.getId().getIdPermiso());
-        TreeNode node;
-        for (RolPermiso rolPermiso : hijos) {
-            node = new MyTreeNode(rolPermiso, treePadre);
-            node.setExpanded(true);
-            node.setSelected(rolPermiso.isValor());
-            CrearPermisosR(rolPermiso, node);
-        }
-    }
+//    private void CrearPermisosR(RolPermiso padre, TreeNode treePadre) {
+//        List<RolPermiso> hijos = getObjetoNegocio().getPermisos(padre.getId().getIdRol(), padre.getId().getIdPermiso());
+//        TreeNode node;
+//        for (RolPermiso rolPermiso : hijos) {
+//            node = new MyTreeNode(rolPermiso, treePadre);
+//            node.setExpanded(true);
+//            node.setSelected(rolPermiso.isValor());
+//            CrearPermisosR(rolPermiso, node);
+//        }
+//    }
 }

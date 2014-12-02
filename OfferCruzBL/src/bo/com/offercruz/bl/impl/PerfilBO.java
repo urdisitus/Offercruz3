@@ -6,21 +6,17 @@
 package bo.com.offercruz.bl.impl;
 
 import bo.com.offercruz.bl.contratos.IPerfilBO;
-import bo.com.offercruz.bl.contratos.IPermisoBO;
 import bo.com.offercruz.bl.excepticiones.BusinessExceptionMessage;
-import bo.com.offercruz.bl.impl.control.FactoriaObjetosNegocio;
 import bo.com.offercruz.dal.contrato.IPerfilDAO;
 import bo.com.offercruz.dal.contrato.IPermisoDAO;
 import bo.com.offercruz.dal.imp.control.FactoriaDAOManager;
-import bo.com.offercruz.dal.impl.PermisoHibernateDAO;
 import bo.com.offercruz.entidades.Perfil;
 import bo.com.offercruz.entidades.Permiso;
 import bo.com.offercruz.entidades.Usuario;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.List;
-import java.util.concurrent.Callable;
+import java.util.Set;
 
 /**
  *
@@ -34,33 +30,30 @@ public class PerfilBO extends ObjetoNegocioGenerico<Perfil, Integer, IPerfilDAO>
         return getDaoManager().getPerfilDAO();
     }
 
-//    @Override
-//    public boolean verificarPermiso(String comandoPermiso, Usuario usuario) {
-//        
-//        if (usuario == null) {
-//            return false;
-//        }
-//
-//        if (usuario.getPerfil() == null) {
-//            return false;
-//        }
-//
-//        if (usuario.getPerfil().getId() == null) {
-//            return false;
-//        }
-//        return ejecutarEnTransaccion(new Callable<Boolean>() {
-//            @Override
-//            public Boolean call() throws Exception {
-//                List<Permiso> permisos = getDaoManager().getPermisoDAO().obtenerPermisos(usuario.getPerfil().getId());
-//                for (Permiso permiso : permisos) {
-//                    if(permiso.getComando().equals(comandoPermiso)){
-//                        return true;
-//                    }
-//                }
-//                return false;
-//            }
-//        });
-//    }
+    @Override
+    public boolean verificarPermiso(int codigoPermiso, Usuario usuario) {
+
+        if (usuario == null) {
+            return false;
+        }
+
+        if (usuario.getPerfil() == null) {
+            return false;
+        }
+
+        if (usuario.getPerfil().getId() == null) {
+            return false;
+        }
+        return ejecutarEnTransaccion(() -> {
+            List<Permiso> permisos = getDaoManager().getPermisoDAO().obtenerPermisos(usuario.getPerfil().getId());
+            for (Permiso permiso : permisos) {
+                if (permiso.getId() == codigoPermiso) {
+                    return true;
+                }
+            }
+            return false;
+        });
+    }
 
     @Override
     protected void validar(Perfil entity) {
