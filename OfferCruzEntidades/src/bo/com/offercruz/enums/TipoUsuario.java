@@ -11,5 +11,16 @@ package bo.com.offercruz.enums;
  * @author Ernesto
  */
 public enum TipoUsuario {
-    CLIENTE, EMPRESA, OFFERCRUZ
+    OFFERCRUZ, EMPRESA , CLIENTE;
+    
+       @Override
+    public String toString() {
+        switch (this) {
+            case OFFERCRUZ:
+                return "Tipo offercruz";
+            case EMPRESA:
+                return "Tipo empresa";
+        }
+        return "";
+    }
 }

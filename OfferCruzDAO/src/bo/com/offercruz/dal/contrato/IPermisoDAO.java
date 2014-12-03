@@ -3,17 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package bo.com.offercruz.dal.contrato;
 
 import bo.com.offercruz.entidades.Permiso;
 import java.util.List;
+
 /**
  *
  * @author Ernesto
  */
 public interface IPermisoDAO extends IDAOGenerico<Permiso, Integer> {
-    Integer getIdPorNombre(String nombre);   
+
+    Integer getIdPorNombre(String nombre);
+
+    List<Permiso> obtenerPermisos(Integer idPerfil);
     
-    List<Permiso> obtenerPermisos(Integer idPermiso);
+    List<Permiso> obtenerPermisosHijos(Integer idPermiso);
+
+    List<Permiso> obtenerPermisosHijos(Integer idPermisoPadre, int idPerfil);
+    
+    List<Permiso> obtenerPermisosPadres();
+    
 }

@@ -5,7 +5,7 @@
  */
 
 package bo.com.offercruz.bl.contratos;
-
+import java.util.List;
 import bo.com.offercruz.entidades.Permiso;
 
 /**
@@ -13,5 +13,9 @@ import bo.com.offercruz.entidades.Permiso;
  * @author Ernesto
  */
 public interface IPermisoBO extends  IGenericoBO<Permiso, Integer>{    
+    List<Permiso> getPermisosHijos(int idPermisoPadre, int idPerfil);
     
+    List<Permiso> getPermisosHijos(int idPermisoPadre);
+    
+    List<Permiso> getPermisosRaiz();
 }

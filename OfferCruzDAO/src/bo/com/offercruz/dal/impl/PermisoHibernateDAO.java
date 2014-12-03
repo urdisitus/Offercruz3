@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package bo.com.offercruz.dal.impl;
 
 import bo.com.offercruz.dal.base.DAOGenericoHibernate;
@@ -16,7 +15,7 @@ import org.hibernate.Query;
  *
  * @author Ernesto
  */
-public class PermisoHibernateDAO extends DAOGenericoHibernate<Permiso, Integer> implements  IPermisoDAO{
+public class PermisoHibernateDAO extends DAOGenericoHibernate<Permiso, Integer> implements IPermisoDAO {
 
     @Override
     public Integer getIdPorNombre(String nombre) {
@@ -32,5 +31,26 @@ public class PermisoHibernateDAO extends DAOGenericoHibernate<Permiso, Integer> 
         query.setParameter("idPerfil", idPermiso);
         return query.list();
     }
-    
+
+    @Override
+    public List<Permiso> obtenerPermisosHijos(Integer idPermiso) {
+        Query query = getSession().createQuery("select p from Permiso p WHERE p.permisoPadreId = :idPermiso ");
+        query.setParameter("idPermiso", idPermiso);
+        return query.list();
+    }
+
+    @Override
+    public List<Permiso> obtenerPermisosHijos(Integer idPermisoPadre, int idPerfil) {
+        Query query = getSession().createQuery("select p from Permiso p join p.perfils t WHERE p.permisoPadreId = :idPermisoPadre AND t.id = :idPerfil ");
+        query.setParameter("idPerfil", idPerfil);
+        query.setParameter("idPermisoPadre", idPermisoPadre);
+        return query.list();
+    }
+
+    @Override
+    public List<Permiso> obtenerPermisosPadres() {
+        Query query = getSession().createQuery("select p from Permiso p WHERE p.permisoPadreId = null ");
+        return query.list();
+    }
+
 }
