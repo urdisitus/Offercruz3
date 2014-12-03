@@ -6,6 +6,11 @@
 
 package offercruzdao;
 
+import bo.com.offercruz.dal.imp.control.DAOManagerHibernate;
+import bo.com.offercruz.dal.impl.CategoriaHibernateDAO;
+import bo.com.offercruz.entidades.Categoria;
+import java.util.Date;
+
 /**
  *
  * @author Ernesto
@@ -17,7 +22,21 @@ public class OfferCruzDAO {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        
+    DAOManagerHibernate manager = new DAOManagerHibernate();
+        Categoria c = new Categoria();
+        c.setEstado(1);
+        c.setId(23);
+        c.setNombre("Juan Carlos");
+        //c.setTipoOferta(TipoOferta.PRODUCTO);
+        c.setFechaModificacion(new Date());
+        c.setFechaCreacion(new Date());
+        manager.iniciarTransaccion();
+        try {
+            ((CategoriaHibernateDAO) manager.getCategoriaDAO()).persistir(c);
+            manager.confirmarTransaccion();
+        } catch (Exception e) {
+            manager.cancelarTransaccion();
+        }    
     }
     
 }

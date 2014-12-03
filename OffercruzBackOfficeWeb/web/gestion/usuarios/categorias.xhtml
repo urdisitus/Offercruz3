@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:metadata>
+        <f:event type="preRenderView" listener="true" />
+    </f:metadata>
+    <h:head>
+        <title>Gestionar categorias</title>
+    </h:head>
+    <h:body>
+        <ui:decorate template="../../template/layout.xhtml">
+            <ui:define name="content">
+                <h2 style="text-align: center">
+                    Gesti&oacute;n de categorias
+                </h2>
+                <p:messages id="growl"  autoUpdate="true" showDetail="true" closable="true" />
+                <h:form id="botones">
+                    <p:commandButton   
+                        actionListener="#{categoriaBean.prepararInsertar()}" 
+                        update=":growl, :main" oncomplete="foco();"  
+                        value="Adicionar" id="add"  icon="icon-add"/>
+                </h:form>
+                <br/>
+                <h:panelGrid columns="3" columnClasses="    topAligned" width="100%" cellpadding="5">
+                    <h:form id="lista">
+                        <p:dataTable emptyMessage="No se han encontrado registros" var="entidad" 
+                                     value="#{categoriaBean.obtenerTodos()}"
+                                     binding="#{tabla}" style="width: 100%; text-align: center" >
+                            <p:column headerText="#" style="width: 10%" >  
+                                <h:outputText value="#{tabla.rowIndex + 1}" />  
+                            </p:column>  
+                            <p:column headerText="Nombre" >  
+                                <h:outputText value="#{entidad.nombre}" />  
+                            </p:column> 
+                            <p:column headerText="Tipo" >  
+                                <h:outputText value="#{categoriaBean.tipoToString(entidad.tipo)}" />  
+                            </p:column>                 
+<!--                            <p:column style="width:10%; text-align: center">  
+                                <p:commandButton  update=":main" oncomplete="foco();" 
+                                                  icon="icon-edit" title="Editar"
+                                                  actionListener="#{usuarioBean.seleccionarEntidad(entidad)}"                                                  
+                                                  />
+                            </p:column> -->
+                        </p:dataTable>
+                    </h:form>
+                    <h:form 
+                        id="main">
+                        <p:panel header="#{usuarioBean.tituloForm()}" style="width: auto"> 
+                            <h:panelGrid id="pgNuevo" columns="2" cellpadding="4">  
+
+                                <h:outputText value="Nombre" />  
+                                <p:inputText  label="Nombre" id="nombre" value="#{usuarioBean.entidad.login}" 
+                                              style="width: 300px" /> 
+
+
+                                <h:outputText value="Perfil" />  
+                                <p:selectOneMenu value="#{usuarioBean.idPerfil}" style="width:300px" >  
+                                    <f:selectItem itemLabel="- Seleccionar -" itemValue="0" />  
+                                    <f:selectItems var="rol" value="#{rolBean.obtenerTodos()}"
+                                                   itemLabel="#{rol.descripcion}" itemValue="#{rol.id}"/>  
+                                </p:selectOneMenu>
+
+                                <h:outputText value="Email" />  
+                                <p:inputText  label="Email" id="email" value="#{usuarioBean.entidad.correoElectronico}" 
+                                              style="width: 300px" /> 
+
+                            </h:panelGrid>
+                            <p:separator/>
+                            <p:commandButton value="Guardar" id="cmdGuardar" actionListener="#{usuarioBean.guardar()}"  
+                                             oncomplete="" update=":growl, :lista, :main" icon="icon-save"/> &nbsp;
+                            <p:commandButton value="Limpiar"   id="cmdLimpiar" 
+                                             actionListener="#{usuarioBean.prepararInsertar()}" 
+                                             oncomplete="foco();" update=":main" icon="icon-clean"/>
+                        </p:panel>
+                    </h:form>  
+                </h:panelGrid >
+                <script type="text/javascript">
+                    function foco() {
+                        var t = document.getElementById('main:nombre');
+                        t.focus();
+                        t.select();
+                    }
+                </script> 
+            </ui:define>
+        </ui:decorate>
+    </h:body>
+</html>
+
