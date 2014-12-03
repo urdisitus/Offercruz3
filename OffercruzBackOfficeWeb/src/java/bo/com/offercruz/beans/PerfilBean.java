@@ -14,6 +14,8 @@ import bo.com.offercruz.utils.MyTreeNode;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.TreeNode;
@@ -22,11 +24,14 @@ import org.primefaces.model.TreeNode;
  *
  * @author Ernesto
  */
+@ManagedBean
+@RequestScoped
 public class PerfilBean  extends  BeanGenerico<Perfil, IPerfilBO>{
-     private TreeNode[] selectedNodes;
+
+    private TreeNode[] selectedNodes;
     private TreeNode raizPermisos;
     private Perfil permisosSeleccionado;
-    
+
     /**
      * Creates a new instance of RolBean
      */
@@ -63,7 +68,7 @@ public class PerfilBean  extends  BeanGenerico<Perfil, IPerfilBO>{
     public void setRaizPermisos(TreeNode raizPermisos) {
         this.raizPermisos = raizPermisos;
     }
-    
+
     public void setPermisosSeleccionado(Perfil permisosSeleccionado) {
         this.permisosSeleccionado = permisosSeleccionado;
     }
@@ -76,7 +81,7 @@ public class PerfilBean  extends  BeanGenerico<Perfil, IPerfilBO>{
     String getComandoPermiso() {
         return "perfil";
     }
-    
+
     public void guardarPermisos() {
         RequestContext context = RequestContext.getCurrentInstance();
         FacesMessage msg;
@@ -98,14 +103,14 @@ public class PerfilBean  extends  BeanGenerico<Perfil, IPerfilBO>{
         }
         FacesContext.getCurrentInstance().addMessage(null, msg);
         context.addCallbackParam("guardo", guardo);
-        
+
     }
-    
+
     public boolean marcarPermisoR(TreeNode node, List<Permiso> lista) {
         Permiso rp = (Permiso) ((MyTreeNode) node).getRealData();
         if (node.isLeaf()) {
             //Es Hoja
-            boolean valor = treeNodeMarcado(node);            
+            boolean valor = treeNodeMarcado(node);
             lista.add(rp);
             return valor;
         } else {
@@ -117,7 +122,7 @@ public class PerfilBean  extends  BeanGenerico<Perfil, IPerfilBO>{
             return valor;
         }
     }
-    
+
     private boolean treeNodeMarcado(TreeNode node) {
         for (TreeNode selectedNode : selectedNodes) {
             if (node == selectedNode) {
@@ -126,12 +131,11 @@ public class PerfilBean  extends  BeanGenerico<Perfil, IPerfilBO>{
         }
         return false;
     }
-    
+
 //    public void seleccionarRolPermisos(Rol entidad) {
 //        this.permisosSeleccionado =  entidad;
 //        crearArbolPermisos(entidad);
 //    }
-    
 //    private void crearArbolPermisos(Perfil rol) {
 //        List<Perfil> raiz = getObjetoNegocio().obtenerTodos();
 //        //System.out.println("Longitud de la lista " + raiz.size());
@@ -142,7 +146,6 @@ public class PerfilBean  extends  BeanGenerico<Perfil, IPerfilBO>{
 //
 //        CrearPermisosR(raiz.get(0), treeControlTotal);
 //    }
-
 //    private void CrearPermisosR(RolPermiso padre, TreeNode treePadre) {
 //        List<RolPermiso> hijos = getObjetoNegocio().getPermisos(padre.getId().getIdRol(), padre.getId().getIdPermiso());
 //        TreeNode node;
@@ -153,4 +156,5 @@ public class PerfilBean  extends  BeanGenerico<Perfil, IPerfilBO>{
 //            CrearPermisosR(rolPermiso, node);
 //        }
 //    }
+    
 }
