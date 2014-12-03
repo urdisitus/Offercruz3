@@ -71,8 +71,11 @@ public class PerfilBean  extends  BeanGenerico<Perfil, IPerfilBO>{
     public Perfil getPermisosSeleccionado() {
         return permisosSeleccionado;
     }
-    
-    
+
+    @Override
+    String getComandoPermiso() {
+        return "perfil";
+    }
     
     public void guardarPermisos() {
         RequestContext context = RequestContext.getCurrentInstance();

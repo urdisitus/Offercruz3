@@ -15,7 +15,7 @@ import javax.faces.context.FacesContext;
 
 /**
  *
- * @author Olvinho
+ * @author Ernesto
  * @param <T> Clase entidad
  * @param <U> Clase negocio
  */
@@ -54,6 +54,7 @@ public abstract class BeanGenerico<T, U extends IGenericoBO<T, ?>> implements ja
         boolean guardo = true;
         try {
             getObjetoNegocio().setIdUsuario(loginBean.getCurrentUser().getId());
+            getObjetoNegocio().setComandoPermiso(getComandoPermiso());
             if (esNuevaEntidad(entidad)) {
                 preInsertar(entidad);
                 entidad = getObjetoNegocio().insertar(entidad);
@@ -101,6 +102,8 @@ public abstract class BeanGenerico<T, U extends IGenericoBO<T, ?>> implements ja
     }
 
     public List<T> obtenerTodos() {
+        getObjetoNegocio().setIdUsuario(loginBean.getCurrentUser().getId());
+        getObjetoNegocio().setComandoPermiso(getComandoPermiso());
         return getObjetoNegocio().obtenerTodos();
     }
 
@@ -135,5 +138,7 @@ public abstract class BeanGenerico<T, U extends IGenericoBO<T, ?>> implements ja
     abstract U getObjetoNegocio();
 
     abstract boolean esNuevaEntidad(T entidad);
+
+    abstract String getComandoPermiso();
 
 }

@@ -85,4 +85,8 @@ public class UsuarioBean extends  BeanGenerico<Usuario, IUsuarioBO>{
         MailHelper.enviarCredenciales(entidad);
     }
 
+    @Override
+    String getComandoPermiso() {
+        return "usuario";
+    }    
 }
