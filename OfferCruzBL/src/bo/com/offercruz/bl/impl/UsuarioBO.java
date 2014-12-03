@@ -99,7 +99,9 @@ public class UsuarioBO extends ObjetoNegocioGenerico<Usuario, Integer, IUsuarioD
                             appendException(new BusinessExceptionMessage("El login '" + entity.getLogin() + "' ya existe", "login"));
                         }
                     }
-                    entity.setPassword(actual.getPassword());
+                    if(entity.getPassword() == null || entity.getPassword().equals("")){
+                        entity.setPassword(actual.getPassword());   
+                    }                    
                     entity.setFechaCreacion(actual.getFechaCreacion());
                     entity.setTipo(actual.getTipo());
                     entity.setEstado(actual.getEstado());
