@@ -36,10 +36,10 @@
                             <p:column headerText="Nombre" >  
                                 <h:outputText value="#{entidad.login}" />  
                             </p:column> 
-                            <p:column headerText="Rol" >  
+                            <p:column headerText="Perfil" >  
                                 <h:outputText value="#{utilsBean.descripcionPerfil(entidad.perfil)}" />  
                             </p:column>                 
-                            <p:column headerText="Email" >  
+                            <p:column headerText="Correo electronico" >  
                                 <h:outputText value="#{entidad.correoElectronico}" />  
                             </p:column>
                             <p:column style="width:10%; text-align: center">  
@@ -63,8 +63,8 @@
                                 <h:outputText value="Perfil" />  
                                 <p:selectOneMenu value="#{usuarioBean.idPerfil}" style="width:300px" >  
                                     <f:selectItem itemLabel="- Seleccionar -" itemValue="0" />  
-                                    <f:selectItems var="rol" value="#{rolBean.obtenerTodos()}"
-                                                   itemLabel="#{rol.descripcion}" itemValue="#{rol.id}"/>  
+                                    <f:selectItems var="perfil" value="#{perfilBean.obtenerTodos()}"
+                                                   itemLabel="#{perfil.nombre}" itemValue="#{perfil.id}"/>  
                                 </p:selectOneMenu>
 
                                 <h:outputText value="Email" />  

@@ -1,5 +1,7 @@
 
 package bo.com.offercruz.beans;
+import bo.com.offercruz.bl.contratos.IPerfilBO;
+import bo.com.offercruz.bl.impl.control.FactoriaObjetosNegocio;
 import bo.com.offercruz.entidades.Perfil;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -21,7 +23,7 @@ public class UtilsBean {
         if (perfil.getId() == null){
             return "";
         }
-        //IRolBO rolBO = FactoriaObjetosNegocio.getInstance().getRolBO();
+//        IPerfilBO rolBO = FactoriaObjetosNegocio.getInstance().getIPerfilBO();
         return perfil.getNombre();
     }
 

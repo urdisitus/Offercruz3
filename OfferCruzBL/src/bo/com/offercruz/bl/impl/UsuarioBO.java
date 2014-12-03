@@ -168,6 +168,7 @@ public class UsuarioBO extends ObjetoNegocioGenerico<Usuario, Integer, IUsuarioD
     @Override
     protected void preInsertar(Usuario entidad) {
         //Generamos la conseña
+        entidad.setEstado(1);
         entidad.setFechaCreacion(new Date());
         entidad.setFechaModificacion(new Date());
         entidad.setPasswordInicial(cadenaAleatoria(15));
