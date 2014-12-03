@@ -7,9 +7,14 @@
       xmlns:h="http://java.sun.com/jsf/html">
     <body>
         <ui:composition>
-            <h:panelGrid columns="1"  style="text-align: center;height: 100px;  background-color: #003882; width: 100%; font-size: 48px; color: white" >
+            <h:panelGrid columns="1"  style="text-align: center;height: 65px;  background:url('/OffercruzBackOfficeWeb/javax.faces.resource/images/ui-bg_gloss-wave_20_111111_500x100.png.xhtml?ln=primefaces-dot-luv') repeat-x scroll 50% top #111111; width: 1024px; font-size: 48px; color: #d9d9d9;" >
                 OfferCruz
             </h:panelGrid>
+            <p:imageSwitch effect="fade" id="fadeEffect" style="margin-bottom: 10px;">
+                <ui:repeat value="#{galeriaPortada.images}" var="image" id="fadeEffectImages">
+                    <p:graphicImage name="/images/#{image}" id="image" />
+                </ui:repeat>
+            </p:imageSwitch>
             <h:form id="menuForm"> 
                 <p:menubar id="mainmenu">  
                     <p:menuitem value="Inicio"  url="/index.xhtml" />
