@@ -20,8 +20,8 @@
                 <p:messages id="growl"  autoUpdate="true" showDetail="true" closable="true" />
                 <h:form id="botones">
                     <p:commandButton   
-                        actionListener="#{empresaBean.abrirDialogN()}"
-                        update=":frmNuevo" oncomplete="PF('dlgEmpresa').show();"  
+                        actionListener="#{empresaBean.prepararInsertar()}"
+                        update=":growl, :frmNuevo" oncomplete="PF('dlgEmpresa').show();"  
                         id="add"  icon="icon-add" value="Adicionar"                   
                         />
                 </h:form>
@@ -42,10 +42,10 @@
                                 <h:outputText value="#{empresaBean.getEstado(entidad.estado)}" />  
                             </p:column>                 
                             <p:column headerText="Logotipo" >  
-                                <img src="data:image;base64,#{entidad.imagen.imagenFisica}" title="Imagen" />
+                                <img src="data:image;base64,#{entidad.imagen.imagenFisica}"  title="Imagen" />
                             </p:column>
                             <p:column style="width:10%; text-align: center">  
-                                <p:commandButton  oncomplete="foco();" 
+                                <p:commandButton  oncomplete="PF('dlgEmpresa').show();" 
                                                   icon="icon-edit" title="Editar"
                                                   actionListener="#{empresaBean.seleccionarEntidad(entidad)}"                                                  
                                                   />
@@ -92,8 +92,9 @@
                                 <p:calendar value="#{empresaBean.entidad.fechaApertura}" id="button"  showOn="button" onkeypress="return CalendarioPress();" />  
                                 <h3>FAX</h3>
                                 <p:inputText value="#{empresaBean.entidad.fax}" maxlength="50" style="width: 524px"/>
-                                <h3>Logotipo</h3>
-
+                                <h3>Logotipo</h3> 
+                                <p:fileUpload style="height: 150px;" fileUploadListener="#{empresaBean.cargarImagen(event)}" mode="advanced"
+                                              update=":growl" auto="true" sizeLimit="200000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
                             </p:scrollPanel>
                             <p:separator/>
                             <p:commandButton value="Guardar" actionListener="#{empresaBean.guardar()}"   oncomplete="handleSaveRequest(xhr, status, args)" update=":growl,:lista" icon="icon-save"/>  
