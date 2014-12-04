@@ -115,17 +115,20 @@ public class OfertaBO extends ObjetoNegocioGenerico<Oferta, Integer, IOfertaDAO>
             appendException(new BusinessExceptionMessage("La categoria es un campo requerido", "categoria"));
         } else {
             //Buscamos por nombre
-            if (isNullOrEmpty(entity.getCategoria().getNombre())) {
-                appendException(new BusinessExceptionMessage("La categoria es un campo requerido", "categoria"));
-            } else {
-                Integer cc = getDaoManager().getCategoriaDAO().obtenerIdPorNombre(entity.getCategoria().getNombre());
-                if (cc != null) {
-                    entity.getCategoria().setId(cc);
-                }
-                if (entity.getCategoria().getId() == null) {
-                    appendException(new BusinessExceptionMessage("La categoria '" + entity.getCategoria().getNombre() + "' no existe", "categoria"));
+            if (entity.getCategoria().getId() == null) {
+                if (isNullOrEmpty(entity.getCategoria().getNombre())) {
+                    appendException(new BusinessExceptionMessage("La categoria es un campo requerido", "categoria"));
+                } else {
+                    Integer cc = getDaoManager().getCategoriaDAO().obtenerIdPorNombre(entity.getCategoria().getNombre());
+                    if (cc != null) {
+                        entity.getCategoria().setId(cc);
+                    }
+                    if (entity.getCategoria().getId() == null) {
+                        appendException(new BusinessExceptionMessage("La categoria '" + entity.getCategoria().getNombre() + "' no existe", "categoria"));
+                    }
                 }
             }
+
         }
 
         entity.setEmpresa(empresa);
