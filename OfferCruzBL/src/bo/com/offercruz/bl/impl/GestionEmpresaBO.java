@@ -8,6 +8,7 @@ package bo.com.offercruz.bl.impl;
 import bo.com.offercruz.dal.contrato.IDAOGenerico;
 import bo.com.offercruz.entidades.Categoria;
 import bo.com.offercruz.entidades.Empresa;
+import bo.com.offercruz.entidades.Oferta;
 import java.io.Serializable;
 import java.util.concurrent.Callable;
 
@@ -29,6 +30,10 @@ public abstract class GestionEmpresaBO<T, ID extends Serializable, U extends IDA
                 Empresa emp = getDaoManager().getEmpresaDAO().obtenerEmpresa(idUsuario);
                 if (emp.getImagen() != null) {
                     System.out.println(emp.getImagen().getNombre());
+                }
+                for (Object object : emp.getOfertas()) {
+                    Oferta of = (Oferta) object;
+                    System.out.println(of.getNombre());
                 }
                 for (Object cat : emp.getCategorias()) {
                     Categoria c = (Categoria) cat;

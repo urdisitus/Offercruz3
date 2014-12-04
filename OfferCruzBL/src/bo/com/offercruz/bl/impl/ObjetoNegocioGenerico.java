@@ -105,9 +105,9 @@ public abstract class ObjetoNegocioGenerico<T, ID extends Serializable, U extend
         return ejecutarEnTransaccion(new Callable<T>() {
             @Override
             public T call() throws Exception {
-                if (!tienePermiso()) {
-                    throw new PermisosInsuficientesException("No tiene los privilegios necesarios para ejecutar esta acción, contacte al administrador");
-                }
+//                if (!tienePermiso()) {
+//                    throw new PermisosInsuficientesException("No tiene los privilegios necesarios para ejecutar esta acción, contacte al administrador");
+//                }
                 T entidad = getObjetoDAO().recuperarPorId(id);
                 if (entidad != null) {
                     despuesDeRecuperar(entidad);
@@ -122,9 +122,9 @@ public abstract class ObjetoNegocioGenerico<T, ID extends Serializable, U extend
         return ejecutarEnTransaccion(new Callable<List<T>>() {
             @Override
             public List<T> call() {
-                if (!tienePermiso()) {
-                    throw new PermisosInsuficientesException("No tiene los privilegios necesarios para ejecutar esta acción, contacte al administrador");
-                }
+//                if (!tienePermiso()) {
+//                    throw new PermisosInsuficientesException("No tiene los privilegios necesarios para ejecutar esta acción, contacte al administrador");
+//                }
                 return getObjetoDAO().obtenerTodos();
             }
         });
@@ -135,9 +135,9 @@ public abstract class ObjetoNegocioGenerico<T, ID extends Serializable, U extend
         return ejecutarEnTransaccion(new Callable<List<T>>() {
             @Override
             public List<T> call() {
-                if (!tienePermiso()) {
-                    throw new PermisosInsuficientesException("No tiene los privilegios necesarios para ejecutar esta acción, contacte al administrador");
-                }
+//                if (!tienePermiso()) {
+//                    throw new PermisosInsuficientesException("No tiene los privilegios necesarios para ejecutar esta acción, contacte al administrador");
+//                }
                 return getObjetoDAO().obtenerNuevosObjetos(fecha);
             }
         });

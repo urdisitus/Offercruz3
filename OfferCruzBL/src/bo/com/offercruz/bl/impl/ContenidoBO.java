@@ -48,8 +48,7 @@ public class ContenidoBO extends GestionEmpresaBO<Contenido, Integer, IContenido
         }
         return ofertas;
     }
-    
-    
+
 
     @Override
     protected void validar(Contenido entity) {
