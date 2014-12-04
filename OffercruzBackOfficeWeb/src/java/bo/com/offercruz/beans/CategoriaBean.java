@@ -12,6 +12,7 @@ import bo.com.offercruz.entidades.Categoria;
 import bo.com.offercruz.utils.MailHelper;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 
 /**
  *
@@ -19,7 +20,7 @@ import javax.faces.bean.RequestScoped;
  */
 
 @ManagedBean
-@RequestScoped
+@SessionScoped
 public class CategoriaBean extends  BeanGenerico<Categoria, ICategoriaBO>{
 
 
@@ -28,15 +29,6 @@ public class CategoriaBean extends  BeanGenerico<Categoria, ICategoriaBO>{
     
     }
     
-    public String tipoToString(int tipo)
-    {
-        if (tipo == 0) 
-            return "Producto";
-        else if (tipo == 1) 
-            return "Servicios";
-        else
-            return "Ambos";
-    }
     
     @Override
     Categoria getNuevaEntidad() {   

@@ -61,7 +61,7 @@
                                 <p:selectOneMenu value="#{categoriaBean.entidad.tipo}" style="width:300px" >  
                                     <f:selectItem itemLabel="- Seleccionar -" itemValue="0" />  
                                     <f:selectItems var="tipo" value="#{tipoOfertaBean.obtenerTodos()}"
-                                                   itemLabel="#{tipo}" itemValue="#{tipoOfertaBean.obtenerTipoOferta(tipo)}"/>  
+                                                   itemLabel="#{tipo.toString()}" itemValue="#{tipoOfertaBean.obtenerTipoOferta(tipo)}"/>  
                                 </p:selectOneMenu>
                             </h:panelGrid>
                             <p:separator/>

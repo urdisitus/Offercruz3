@@ -39,10 +39,10 @@ public class TipoOfertaBean {
     
     
     public int obtenerTipoOferta(String oferta){
-        if (oferta.equals("Producto")) 
+        if (oferta.equals("PRODUCTO")) 
             return 0;
         else 
-            if (oferta.equals("Servicio"))
+            if (oferta.equals("SERVICIO"))
                 return 1;
             else
                 return 2;
