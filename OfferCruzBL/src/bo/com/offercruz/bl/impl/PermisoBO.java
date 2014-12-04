@@ -29,18 +29,25 @@ public class PermisoBO extends ObjetoNegocioGenerico<Permiso, Integer, IPermisoD
             return getDaoManager().getPermisoDAO().obtenerPermisosHijos(idPermisoPadre, idPerfil);
         });        
     }
+    
+     @Override
+    public List<Permiso> obtenerPermisosHijosPorTipo(int idPermisoPadre, int tipo) {
+        return ejecutarEnTransaccion(() -> {
+            return getDaoManager().getPermisoDAO().obtenerPermisosHijosPorTipo(idPermisoPadre, tipo);
+        });        
+    }
 
     @Override
     public List<Permiso> getPermisosHijos(int idPermisoPadre) {
         return ejecutarEnTransaccion(() -> {
-            return getDaoManager().getPermisoDAO().obtenerPermisosHijos(idPermisoPadre);
+            return getDaoManager().getPermisoDAO().obtenerPermisos(idPermisoPadre);
         });
     }
 
     @Override
-    public List<Permiso> getPermisosRaiz() {
+    public List<Permiso> getPermisosRaiz(int tipo) {
         return ejecutarEnTransaccion(() -> {
-            return getDaoManager().getPermisoDAO().obtenerPermisosPadres();
+            return getDaoManager().getPermisoDAO().obtenerPermisosPadres(tipo);
         });
     }
     

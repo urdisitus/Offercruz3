@@ -37,14 +37,14 @@
                                 <h:outputText value="#{entidad.nombre}" />  
                             </p:column> 
                             <p:column headerText="Tipo" >  
-                                <h:outputText value="#{categoriaBean.tipoToString(entidad.tipo)}" />  
+                                <h:outputText value="#{tipoOfertaBean.obtenerIndividual(entidad.tipo)}" />  
                             </p:column>                 
-<!--                            <p:column style="width:10%; text-align: center">  
+                            <p:column style="width:10%; text-align: center">  
                                 <p:commandButton  update=":main" oncomplete="foco();" 
                                                   icon="icon-edit" title="Editar"
-                                                  actionListener="#{usuarioBean.seleccionarEntidad(entidad)}"                                                  
+                                                  actionListener="#{categoriaBean.seleccionarEntidad(entidad)}"                                                  
                                                   />
-                            </p:column> -->
+                            </p:column> 
                         </p:dataTable>
                     </h:form>
                     <h:form 
@@ -53,27 +53,22 @@
                             <h:panelGrid id="pgNuevo" columns="2" cellpadding="4">  
 
                                 <h:outputText value="Nombre" />  
-                                <p:inputText  label="Nombre" id="nombre" value="#{usuarioBean.entidad.login}" 
+                                <p:inputText  label="Nombre" id="nombre" value="#{categoriaBean.entidad.nombre}" 
                                               style="width: 300px" /> 
 
 
-                                <h:outputText value="Perfil" />  
-                                <p:selectOneMenu value="#{usuarioBean.idPerfil}" style="width:300px" >  
+                                <h:outputText value="Tipo" />  
+                                <p:selectOneMenu value="#{categoriaBean.entidad.tipo}" style="width:300px" >  
                                     <f:selectItem itemLabel="- Seleccionar -" itemValue="0" />  
-                                    <f:selectItems var="rol" value="#{rolBean.obtenerTodos()}"
-                                                   itemLabel="#{rol.descripcion}" itemValue="#{rol.id}"/>  
+                                    <f:selectItems var="tipo" value="#{tipoOfertaBean.obtenerTodos()}"
+                                                   itemLabel="#{tipo.toString()}" itemValue="#{tipoOfertaBean.obtenerTipoOferta(tipo)}"/>  
                                 </p:selectOneMenu>
-
-                                <h:outputText value="Email" />  
-                                <p:inputText  label="Email" id="email" value="#{usuarioBean.entidad.correoElectronico}" 
-                                              style="width: 300px" /> 
-
                             </h:panelGrid>
                             <p:separator/>
-                            <p:commandButton value="Guardar" id="cmdGuardar" actionListener="#{usuarioBean.guardar()}"  
+                            <p:commandButton value="Guardar" id="cmdGuardar" actionListener="#{categoriaBean.guardar()}"  
                                              oncomplete="" update=":growl, :lista, :main" icon="icon-save"/> &nbsp;
                             <p:commandButton value="Limpiar"   id="cmdLimpiar" 
-                                             actionListener="#{usuarioBean.prepararInsertar()}" 
+                                             actionListener="#{categoriaBean.prepararInsertar()}" 
                                              oncomplete="foco();" update=":main" icon="icon-clean"/>
                         </p:panel>
                     </h:form>  

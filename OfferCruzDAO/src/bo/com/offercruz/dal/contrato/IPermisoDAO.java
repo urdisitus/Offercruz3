@@ -17,11 +17,13 @@ public interface IPermisoDAO extends IDAOGenerico<Permiso, Integer> {
     Integer getIdPorNombre(String nombre);
 
     List<Permiso> obtenerPermisos(Integer idPerfil);
-    
-    List<Permiso> obtenerPermisosHijos(Integer idPermiso);
+
+    List<Permiso> obtenerPermisosHijosPorTipo(Integer idPermiso, int tipo);
+
+    List<Permiso> obtenerPermisosHijos(Integer idPermisoPadre);
 
     List<Permiso> obtenerPermisosHijos(Integer idPermisoPadre, int idPerfil);
-    
-    List<Permiso> obtenerPermisosPadres();
-    
+
+    List<Permiso> obtenerPermisosPadres(int tipo);
+
 }
