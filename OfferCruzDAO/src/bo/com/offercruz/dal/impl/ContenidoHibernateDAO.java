@@ -9,6 +9,7 @@ import bo.com.offercruz.dal.base.DAOGenericoHibernate;
 import bo.com.offercruz.dal.contrato.IContenidoDAO;
 import bo.com.offercruz.entidades.Contenido;
 import bo.com.offercruz.entidades.Imagen;
+import bo.com.offercruz.entidades.Oferta;
 import java.util.List;
 import org.hibernate.Query;
 
@@ -24,6 +25,10 @@ public class ContenidoHibernateDAO extends DAOGenericoHibernate<Contenido, Integ
         query.setParameter("empresa", idEmpresa);
         List<Contenido> contenidos = query.list();
         for (Contenido contenido : contenidos) {
+            for (Object object : contenido.getOfertas()) {
+                Oferta img = (Oferta) object;
+                System.out.println(img.getNombre());
+            }
             for (Object object : contenido.getImagens()) {
                 Imagen img = (Imagen) object;
                 System.out.println(img.getNombre());
@@ -37,6 +42,10 @@ public class ContenidoHibernateDAO extends DAOGenericoHibernate<Contenido, Integ
     public List<Contenido> obtenerTodos() {
         List<Contenido> contenidos = super.obtenerTodos();
         for (Contenido contenido : contenidos) {
+            for (Object object : contenido.getOfertas()) {
+                Oferta img = (Oferta) object;
+                System.out.println(img.getNombre());
+            }
             for (Object object : contenido.getImagens()) {
                 Imagen img = (Imagen) object;
                 System.out.println(img.getNombre());
@@ -49,6 +58,10 @@ public class ContenidoHibernateDAO extends DAOGenericoHibernate<Contenido, Integ
     @Override
     public Contenido recuperarPorId(Integer id) {
         Contenido contenido = super.recuperarPorId(id);
+        for (Object object : contenido.getOfertas()) {
+            Oferta img = (Oferta) object;
+            System.out.println(img.getNombre());
+        }
         for (Object object : contenido.getImagens()) {
             Imagen img = (Imagen) object;
             System.out.println(img.getNombre());
@@ -61,7 +74,11 @@ public class ContenidoHibernateDAO extends DAOGenericoHibernate<Contenido, Integ
     @Override
     public Contenido obtenerPorId(Integer id) {
         Contenido contenido = super.obtenerPorId(id);
-         for (Object object : contenido.getImagens()) {
+        for (Object object : contenido.getOfertas()) {
+            Oferta img = (Oferta) object;
+            System.out.println(img.getNombre());
+        }
+        for (Object object : contenido.getImagens()) {
             Imagen img = (Imagen) object;
             System.out.println(img.getNombre());
         }

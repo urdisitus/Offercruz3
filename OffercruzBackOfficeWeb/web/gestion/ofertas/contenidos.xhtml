@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{loginBean.solicitarPermiso(7000)}" />
+    </f:metadata>
+    <h:head>
+        <title>Gestionar contenidos</title>
+    </h:head>
+    <h:body>
+        <ui:decorate template="../../template/layout.xhtml">
+            <ui:define name="content">
+                <h2 style="text-align: center">
+                    Gesti&oacute;n de contenidos
+                </h2>
+                <p:messages id="growl"  autoUpdate="true" showDetail="true" closable="true" />
+                <h:form id="botones">
+                    <p:commandButton  actionListener="#{contenidoBean.prepararInsertar()}" 
+                                      update=":frmContenido:dlgContenido" oncomplete="PF('dlgContenido').show()"  
+                                      value="Adicionar" id="add"  icon="icon-add"
+                                      />
+                </h:form>
+                <br/>
+                <h:panelGrid columns="1" columnClasses="topAligned" width="100%" cellpadding="5">
+                    <!-- Formulario para Contenido-->
+                    <h:form id="lista">
+                        <p:dataTable emptyMessage="No se han encontrado registros" var="entidad" 
+                                     value="#{contenidoBean.obtenerTodos()}"
+                                     binding="#{tabla}" style="width: 100%; text-align: center" >
+                            <p:column headerText="#"  style="width: 10%">  
+                                <h:outputText value="#{tabla.rowIndex + 1}" />  
+                            </p:column>  
+                            <p:column headerText="Titulo" style="width: 50%" >  
+                                <h:outputText value="#{entidad.titulo}" />  
+                            </p:column>                               
+                            <p:column headerText="Descripci&oacute;n" style="width: 50%" >  
+                                <h:outputText value="#{entidad.descripcion}" />  
+                            </p:column>   
+                            <p:column headerText="Fecha publicacion" style="width: 50%" >  
+                                <h:outputText value="#{contenidoBean.parseDate(entidad.fechaPublicacion)}" />  
+                            </p:column>  
+                            <p:column headerText="Fecha expiracion" style="width: 50%" >  
+                                <h:outputText value="#{contenidoBean.parseDate(entidad.fechaExpiracion)}" />  
+                            </p:column>  
+                            <p:column style="width:25%; text-align: center">                                  
+
+                                <p:commandButton  actionListener="#{contenidoBean.inicializarLista(entidad)}"
+                                                  update=":frmOfertas:dlgOfertas" 
+                                                  oncomplete="PF('dlgOfertas').show()" 
+                                                  icon="icon-key" title="Modificar "/>  
+                            </p:column> 
+                        </p:dataTable>
+                    </h:form>
+                    <h:form id="frmContenido">
+                        <p:dialog header="#{contenidoBean.tituloForm()}" widgetVar="dlgContenido" resizable="false" showEffect="fade" hideEffect="explode" modal="true" id="dlgContenido">  
+                            <p:scrollPanel style="height:450px; width: 450px" mode="native"> 
+                                <p:panelGrid columns="1">
+                                    <h:outputText value="T&iacute;tulo" />  
+                                    <p:inputText  label="T&iacute;tulo" id="nombre" 
+                                                  value="#{contenidoBean.entidad.titulo}" 
+                                                  style="width: 300px" /> 
+
+                                    <h:outputText value="Descripci&oacute;n" />  
+                                    <p:inputText  label="Descripci&oacute;n" id="descripcion" 
+                                                  value="#{contenidoBean.entidad.descripcion}" 
+                                                  style="width: 300px" /> 
+                                    <p:panelGrid columns="2">
+                                        <h:outputText value="Fecha publicacion" />  
+                                        <p:calendar id="fechapub" value="#{contenidoBean.entidad.fechaPublicacion}" mode="inline" />
+                                        <h:outputText value="Fecha expiracion   " />  
+                                        <p:calendar id="fechaexp" value="#{contenidoBean.entidad.fechaExpiracion}" mode="inline" />
+                                    </p:panelGrid>
+                                </p:panelGrid>                              
+
+                            </p:scrollPanel>
+                            <p:separator/>
+                            <p:commandButton value="Guardar"  actionListener="#{contenidoBean.guardar()}" oncomplete="handleSaveRequest(xhr, status, args)" update=":growl" icon="icon-save"/>  
+                            <p:commandButton value="Cancelar" onclick="PF('dlgContenido').hide();" ajax="false" type="button" icon="icon-cancel"/>  
+                        </p:dialog>
+                    </h:form>
+                    
+                    <h:form id="frmOfertas">
+                        <p:dialog header="Ofertas" widgetVar="dlgOfertas" resizable="false" showEffect="fade" hideEffect="explode" modal="true" id="dlgOfertas">  
+                            <p:pickList id="pickList" value="#{contenidoBean.ofertas}" var="oferta" itemLabel="#{oferta}" itemValue="#{oferta}" />
+                            <p:separator/>
+                            <p:commandButton value="Guardar"  actionListener="#{contenidoBean.guardarOfertas()}" oncomplete="handleSaveRequestOfertas(xhr, status, args)" update=":growl" icon="icon-save"/>  
+                            <p:commandButton value="Cancelar" onclick="PF('dlgOfertas').hide();" ajax="false" type="button" icon="icon-cancel"/>  
+                        </p:dialog>
+                    </h:form>
+                </h:panelGrid>
+                <script type="text/javascript">
+                    function foco() {
+                        var t = document.getElementById('main:nombre');
+                        t.focus();
+                        t.select();
+                    }
+                    
+                     function handleSaveRequestOfertas(xhr, status, args) {
+                        if (args.validationFailed || !args.guardo) {
+                            jQuery('#dlgOfertas').effect("shake", {times: 3}, 100);
+                        }
+                        else {
+                            PF('dlgOfertas').hide();
+                        }
+                    }
+
+                    function handleSaveRequest(xhr, status, args) {
+                        if (args.validationFailed || !args.guardo) {
+                            jQuery('#dlgContenido').effect("shake", {times: 3}, 100);
+                        }
+                        else {
+                            PF('dlgContenido').hide();
+                        }
+                    }
+                </script> 
+            </ui:define>
+        </ui:decorate>
+    </h:body>
+</html>
+
