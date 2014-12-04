@@ -65,7 +65,7 @@
                                 <h3>Razón social</h3>
                                 <p:inputText value="#{empresaBean.entidad.razonSocial}" maxlength="50" style="width: 524px"/>
                                 <h3>Correo</h3>
-                                <p:inputText value="#{empresaBean.entidad.usuario.correoElectronico}" maxlength="50" style="width: 524px"/>
+                                <p:inputText value="#{empresaBean.entidad.correoElectronico}" maxlength="50" style="width: 524px"/>
                                 <h3>slogan</h3>
                                 <p:inputTextarea value="#{empresaBean.entidad.slogan}" rows="2" cols="50" counter="display2" maxlength="100" counterTemplate="{0} Caracteres restantes." autoResize="true" style="width: 524px; resize: none" />
                                 <br/>
@@ -109,7 +109,7 @@
                                 </p:pickList>
                             </p:scrollPanel>
                             <p:separator/>
-                            <p:commandButton value="Guardar" actionListener="#{empresaBean.guardarCategorías()}" oncomplete="handleSaveRequest(xhr, status, args)" update=":growl,:lista" icon="icon-save"/>  
+                            <p:commandButton value="Guardar" actionListener="#{empresaBean.guardarCategorias()}" oncomplete="handleSaveRequestCategorias(xhr, status, args)" update=":growl,:lista" icon="icon-save"/>  
                             <p:commandButton value="Cancelar" onclick="PF('dlgCategorias').hide();" ajax="false" type="button" icon="icon-cancel"/>  
                         </p:dialog>
                     </h:form>
@@ -119,6 +119,15 @@
                         return false;
                     }
 
+
+                    function handleSaveRequestCategorias(xhr, status, args) {
+                        if (args.validationFailed || !args.guardo) {
+                            jQuery('#dlgCategorias').effect("shake", {times: 3}, 100);
+                        }
+                        else {
+                            PF('dlgCategorias').hide();
+                        }
+                    }
                     function handleSaveRequest(xhr, status, args) {
                         if (args.validationFailed || !args.guardo) {
                             jQuery('#dlgEmpresa').effect("shake", {times: 3}, 100);
