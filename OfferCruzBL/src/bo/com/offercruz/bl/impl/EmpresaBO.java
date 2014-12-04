@@ -51,7 +51,7 @@ public class EmpresaBO extends ObjetoNegocioGenerico<Empresa, Integer, IEmpresaD
             appendException(new BusinessExceptionMessage("La razón social es un campo requerido.", "nombre"));
             nombreValido = false;
         }
-        if (nombreValido) {
+        if (nombreValido && entity.getId() == null) {
             Integer emp = getObjetoDAO().obtenerIdPorNombre(entity.getRazonSocial());
             if (emp != null) {
                 appendException(new BusinessExceptionMessage("La empresa '" + entity.getRazonSocial() + "' ya existe.", "nombre"));
@@ -59,35 +59,29 @@ public class EmpresaBO extends ObjetoNegocioGenerico<Empresa, Integer, IEmpresaD
         }
 
         //Email
-        boolean emailValido = true;
-        if (isNullOrEmpty(entity.getCorreoElectronico())) {
-            appendException(new BusinessExceptionMessage("El email es un campo requerido", "email"));
-            emailValido = false;
-        } else if (entity.getCorreoElectronico().length() > 50) {
-            appendException(new BusinessExceptionMessage("El email no puede tener más de 50 carácteres", "email"));
-            emailValido = false;
-        } else if (!validarEmail(entity.getCorreoElectronico())) {
-            appendException(new BusinessExceptionMessage("El email no es válido", "email"));
-            emailValido = false;
-        }
-
-        if (emailValido) {
-            if (entity.getId() == null) {
-                if ((getDaoManager().getUsuarioDAO().getIdUsuarioPorCorreoElectronico(entity.getCorreoElectronico()) != null)) {
-                    appendException(new BusinessExceptionMessage("El email " + entity.getCorreoElectronico() + " ya esta registrado", "email"));
-                }
-            } else if (getObjetoDAO().checkId(entity.getId())) {
-                Empresa emp = getDaoManager().getEmpresaDAO().recuperarPorId(entity.getId());
-                Usuario actual = getDaoManager().getUsuarioDAO().obtenerPorId(emp.getUsuario().getId());
-                if (!actual.getCorreoElectronico().equalsIgnoreCase(entity.getCorreoElectronico())) {
-                    if ((getDaoManager().getUsuarioDAO().getIdUsuarioPorCorreoElectronico(entity.getCorreoElectronico()) != null)) {
-                        appendException(new BusinessExceptionMessage("El email " + entity.getCorreoElectronico() + " ya esta registrado", "email"));
-                    }
-                    actual.setCorreoElectronico(entity.getCorreoElectronico());
-                }
-                entity.setUsuario(actual);
+        if (entity.getId() == null) {
+            if ((getDaoManager().getUsuarioDAO().getIdUsuarioPorCorreoElectronico(entity.getCorreoElectronico()) != null)) {
+                appendException(new BusinessExceptionMessage("El email " + entity.getCorreoElectronico() + " ya esta registrado", "email"));
+            }
+            if (isNullOrEmpty(entity.getCorreoElectronico())) {
+                appendException(new BusinessExceptionMessage("El email es un campo requerido", "email"));
+            } else if (entity.getCorreoElectronico().length() > 50) {
+                appendException(new BusinessExceptionMessage("El email no puede tener más de 50 carácteres", "email"));
+            } else if (!validarEmail(entity.getCorreoElectronico())) {
+                appendException(new BusinessExceptionMessage("El email no es válido", "email"));
             }
         }
+    //        else if (getObjetoDAO().checkId(entity.getId())) {
+//            Empresa emp = getDaoManager().getEmpresaDAO().recuperarPorId(entity.getId());
+//            Usuario actual = getDaoManager().getUsuarioDAO().obtenerPorId(emp.getUsuario().getId());
+//            if (!actual.getCorreoElectronico().equalsIgnoreCase(entity.getCorreoElectronico())) {
+//                if ((getDaoManager().getUsuarioDAO().getIdUsuarioPorCorreoElectronico(entity.getCorreoElectronico()) != null)) {
+//                    appendException(new BusinessExceptionMessage("El email " + entity.getCorreoElectronico() + " ya esta registrado", "email"));
+//                }
+//                actual.setCorreoElectronico(entity.getCorreoElectronico());
+//            }
+//            entity.setUsuario(actual);
+//        }
 
         // VALIDAR FECHA
         //Permisos 
@@ -114,14 +108,6 @@ public class EmpresaBO extends ObjetoNegocioGenerico<Empresa, Integer, IEmpresaD
             for (Object object : nuevosPermisos) {
                 Categoria pp = (Categoria) object;
                 pp.setId(permisoDAO.obtenerIdPorNombre(pp.getNombre()));
-            }
-        }
-
-        if (!entity.getCategorias().isEmpty()) {
-            for (Object object : entity.getCategorias()) {
-                Categoria f = (Categoria) object;
-                int id = getDaoManager().getOfertaDAO().getIdPorNombre(f.getNombre());
-                f.setId(id);
             }
         }
     }
