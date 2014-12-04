@@ -92,9 +92,9 @@ public class EmpresaBO extends ObjetoNegocioGenerico<Empresa, Integer, IEmpresaD
         // VALIDAR FECHA
         
         //Permisos 
-        if (entity.getCategorias().isEmpty()) {
-            appendException(new BusinessExceptionMessage("La empresa debe tener una o mas categorias asignadas.", "categorias"));
-        } else {
+        if (!entity.getCategorias().isEmpty()) {
+//            appendException(new BusinessExceptionMessage("La empresa debe tener una o mas categorias asignadas.", "categorias"));
+//        } else {
             Set nuevosPermisos = new HashSet();
             for (Object permiso : entity.getCategorias()) {
                 Categoria p = (Categoria) permiso;

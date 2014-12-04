@@ -10,12 +10,15 @@ import bo.com.offercruz.bl.excepticiones.BusinessExceptionMessage;
 import bo.com.offercruz.dal.contrato.IContenidoDAO;
 import bo.com.offercruz.entidades.Contenido;
 import java.util.Date;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.concurrent.Callable;
 
 /**
  *
  * @author Ernesto
  */
-public class ContenidoBO extends ObjetoNegocioGenerico<Contenido, Integer, IContenidoDAO> implements IContenidoBO {
+public class ContenidoBO extends GestionEmpresaBO<Contenido, Integer, IContenidoDAO> implements IContenidoBO {
 
     @Override
     IContenidoDAO getObjetoDAO() {
@@ -28,6 +31,25 @@ public class ContenidoBO extends ObjetoNegocioGenerico<Contenido, Integer, ICont
         entidad.setFechaCreacion(new Date());
         entidad.setFechaModificacion(new Date());
     }
+
+    @Override
+    public List<Contenido> obtenerTodos() {
+        List<Contenido> ofertas = new ArrayList<Contenido>();
+        if (getEmpresa() == null) {
+            ofertas.addAll(super.obtenerTodos());
+        } else {
+            ofertas.addAll(ejecutarEnTransaccion(new Callable<List<Contenido>>() {
+
+                @Override
+                public List<Contenido> call() throws Exception {
+                    return getObjetoDAO().obtenerTodas(getEmpresa().getId());
+                }
+            }));
+        }
+        return ofertas;
+    }
+    
+    
 
     @Override
     protected void validar(Contenido entity) {

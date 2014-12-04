@@ -7,11 +7,12 @@
 package bo.com.offercruz.bl.contratos;
 
 import bo.com.offercruz.entidades.Contenido;
+import bo.com.offercruz.entidades.Empresa;
 
 /**
  *
  * @author Ernesto
  */
 public interface IContenidoBO extends IGenericoBO<Contenido, Integer>{
-    
+    Empresa getEmpresa();
 }
