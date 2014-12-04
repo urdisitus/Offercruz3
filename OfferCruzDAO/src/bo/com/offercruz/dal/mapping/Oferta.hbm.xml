@@ -37,25 +37,6 @@
     <property name="precioUnitario" type="java.lang.Double">
       <column name="PrecioUnitario" precision="22" scale="0"/>
     </property>
-    <set fetch="select" inverse="true" lazy="true" name="detallecontenidos" table="detallecontenido">
-      <key>
-        <column name="IdOferta" not-null="true"/>
-      </key>
-      <one-to-many class="bo.com.offercruz.entidades.Detallecontenido"/>
-    </set>
-    <set fetch="select" inverse="true" lazy="true" name="detallecontenidos_1" table="detallecontenido">
-      <key>
-        <column name="IdOferta" not-null="true"/>
-      </key>
-      <one-to-many class="bo.com.offercruz.entidades.Detallecontenido"/>
-    </set>
-    <set fetch="select" inverse="true" lazy="true" name="detallesolicituds" table="detallesolicitud">
-      <key>
-        <column name="IdOferta" not-null="true"/>
-      </key>
-      <one-to-many class="bo.com.offercruz.entidades.Detallesolicitud"/>
-    </set>
-    
     <set fetch="select" inverse="false" lazy="true" name="contenidos" table="contenidooferta">
       <key>
         <column name="idOferta" not-null="true"/>

@@ -76,8 +76,8 @@ public class ContenidoBO extends GestionEmpresaBO<Contenido, Integer, IContenido
         if (entity.getImagens().isEmpty()) {
             appendException(new BusinessExceptionMessage("Usd. debe agregar una o mas imagenes al contenido.", "imagenes"));
         }
-        if (entity.getDetallecontenidos().isEmpty()) {
-            appendException(new BusinessExceptionMessage("Usd. debe agregar una o mas ofertas al contenido.", "detalle_contenido"));
+        if (entity.getOfertas().isEmpty()) {
+            appendException(new BusinessExceptionMessage("Usd. debe agregar una o mas ofertas al contenido.", "ofertas"));
         }
     }
 

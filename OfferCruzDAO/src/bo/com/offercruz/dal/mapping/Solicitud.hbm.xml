@@ -30,12 +30,6 @@
     </property>
     <property name="totalEstimadoSolicitud" type="java.lang.Double">
       <column name="TotalEstimadoSolicitud" precision="22" scale="0"/>
-    </property>
-    <set fetch="select" inverse="true" lazy="true" name="detallesolicituds" table="detallesolicitud">
-      <key>
-        <column name="IdSolicitud" not-null="true"/>
-      </key>
-      <one-to-many class="bo.com.offercruz.entidades.Detallesolicitud"/>
-    </set>
+    </property>    
   </class>
 </hibernate-mapping>
