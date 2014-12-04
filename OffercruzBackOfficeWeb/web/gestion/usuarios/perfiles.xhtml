@@ -1,0 +1,128 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{loginBean.solicitarPermiso(2000)}" />
+    </f:metadata>
+    <h:head>
+        <title>Gestionar perfiles</title>
+    </h:head>
+    <h:body>
+        <ui:decorate template="../../template/layout.xhtml">
+            <ui:define name="content">
+                <h2 style="text-align: center">
+                    Gesti&oacute;n de perfiles
+                </h2>
+                <p:messages id="growl"  autoUpdate="true" showDetail="true" closable="true" />
+                <h:form id="botones">
+                    <p:commandButton  actionListener="#{perfilBean.prepararInsertar()}" 
+                                      update=":growl, :main" oncomplete="foco();"  
+                                      value="Adicionar" id="add"  icon="icon-add"
+                                      />
+                </h:form>
+                <br/>
+                <h:panelGrid columns="2" columnClasses="topAligned" width="100%" cellpadding="5">
+                    <h:form id="lista">
+                        <p:dataTable emptyMessage="No se han encontrado registros" var="entidad" 
+                                     value="#{perfilBean.obtenerTodos()}"
+                                     binding="#{tabla}" style="width: 100%; text-align: center" >
+                            <p:column headerText="#"  style="width: 10%">  
+                                <h:outputText value="#{tabla.rowIndex + 1}" />  
+                            </p:column>  
+                            <p:column headerText="Nombre" >  
+                                <h:outputText value="#{entidad.nombre}" />  
+                            </p:column>                               
+                            <p:column headerText="Descripci&oacute;n" style="width: 50%" >  
+                                <h:outputText value="#{entidad.descripcion}" />  
+                            </p:column>   
+                            <p:column headerText="Tipo" >  
+                                <h:outputText value="#{tipoUsuarioBean.obtenerIndividual(entidad.tipo)}" />  
+                            </p:column> 
+                            <p:column style="width:25%; text-align: center">  
+                                <p:commandButton  update=":main" oncomplete="foco();" 
+                                                  actionListener="#{perfilBean.seleccionarEntidad(entidad)}"
+                                                  icon="icon-edit" title="Editar"/>
+
+                                <p:commandButton  actionListener="#{perfilBean.seleccionarPerfilPermisos(entidad)}"
+                                                  update=":frmPermisos:dlgPermisos" 
+                                                  oncomplete="PF('dlgPermisos').show()" 
+                                                  icon="icon-key" title="Modificar permisos"/>  
+                            </p:column> 
+                        </p:dataTable>
+                    </h:form>
+                    <h:form  
+                        id="main">
+                        <p:panel header="#{perfilBean.tituloForm()}" style="width: auto">  
+
+                            <h:panelGrid id="pgNuevo" columns="2" cellpadding="4">  
+
+                                <h:outputText value="Nombre" />  
+                                <p:inputText  label="Nombre" id="nombre" 
+                                              value="#{perfilBean.entidad.nombre}" 
+                                              style="width: 300px" /> 
+                                
+                                <h:outputText value="Descripci&oacute;n" />  
+                                <p:inputText  label="Descripci&oacute;n" id="descripcion" 
+                                              value="#{perfilBean.entidad.descripcion}" 
+                                              style="width: 300px" /> 
+                                
+                                <h:outputText value="Tipo Usuario" />  
+                                <p:selectOneMenu value="#{perfilBean.entidad.tipo}" style="width:300px" >  
+                                    <f:selectItem itemLabel="- Seleccionar -" itemValue="0" />  
+                                    <f:selectItems var="tipoUsuario" value="#{tipoUsuario.obtenerTodos()}"
+                                                   itemLabel="#{tipoUsuario}" itemValue="#{tipoUsuarioBean.obtenerTipoUsuario(tipoUsuario)}"/>  
+                                </p:selectOneMenu>
+
+
+                            </h:panelGrid> 
+                            <p:separator/>
+                            <p:commandButton value="Guardar" id="cmdGuardar" 
+                                             actionListener="#{perfilBean.guardar()}"  
+                                             oncomplete="" update=":growl, :lista, :main" icon="icon-save"/> &nbsp;
+                            <p:commandButton value="Limpiar"   id="cmdLimpiar" 
+                                             actionListener="#{perfilBean.prepararInsertar()}" 
+                                             oncomplete="foco();" update=":main" icon="icon-clean"/>
+                        </p:panel>
+                    </h:form> 
+                    <!-- Formulario para permisos-->
+                    <h:form id="frmPermisos">
+                        <p:dialog header="Modificar permisos" widgetVar="dlgPermisos" resizable="false" showEffect="fade" hideEffect="explode" modal="true" id="dlgPermisos">  
+                            <p:scrollPanel style="height:450px; width: 325px" mode="native"> 
+                                <p:tree value="#{perfilBean.raizPermisos}" var="node" id="checkboxTreePermisos"  
+                                        selectionMode="checkbox" selection="#{perfilBean.selectedNodes}">  
+                                    <p:treeNode>  
+                                        <h:outputText value="#{node}" />  
+                                    </p:treeNode>  
+                                </p:tree>
+                            </p:scrollPanel>
+                            <p:separator/>
+                            <p:commandButton value="Guardar"  actionListener="#{perfilBean.guardarPermisos()}" oncomplete="handleSaveRequest(xhr, status, args)" update=":growl" icon="icon-save"/>  
+                            <p:commandButton value="Cancelar" onclick="PF('dlgPermisos').hide();" ajax="false" type="button" icon="icon-cancel"/>  
+                        </p:dialog>
+                    </h:form>
+                </h:panelGrid>
+                <script type="text/javascript">
+                    function foco() {
+                        var t = document.getElementById('main:descripcion');
+                        t.focus();
+                        t.select();
+                    }
+
+                    function handleSaveRequest(xhr, status, args) {
+                        if (args.validationFailed || !args.guardo) {
+                            jQuery('#dlgPermisos').effect("shake", {times: 3}, 100);
+                        }
+                        else {
+                            PF('dlgPermisos').hide();
+                        }
+                    }
+                </script> 
+            </ui:define>
+        </ui:decorate>
+    </h:body>
+</html>
+

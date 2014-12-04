@@ -16,6 +16,9 @@
     <property name="estado" type="int">
       <column name="Estado" not-null="true"/>
     </property>
+    <property name="tipo" type="int">
+      <column name="Tipo" not-null="true"/>
+    </property>
     <property name="permisoPagina" type="string">
       <column length="50" name="PermisoPagina"/>
     </property>

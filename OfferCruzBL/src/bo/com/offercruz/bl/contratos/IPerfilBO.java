@@ -16,4 +16,6 @@ public interface IPerfilBO extends IGenericoBO<Perfil, Integer> {
 
     boolean verificarPermiso(String comandoPermiso, Usuario usuario);
     boolean verificarPermiso(int codigoPermiso, Usuario usuario);
+    
+    
 }

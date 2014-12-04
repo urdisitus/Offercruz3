@@ -9,7 +9,6 @@
 body { 
     margin: 0;
     padding: 0;
-    background-image: url("../resources/images/fondorelleno.jpg");
 }
 .ui-widget {
     font-size: 16px !important;
@@ -22,13 +21,12 @@ body {
     border-bottom: 1px solid #252525;*/
     margin: 0 auto;
 
-    width: 90%;
+    width: 1024px;
 }
 #filter {
     width: 500px !important;
 
 }
-
 
 .myPanel td { 
     vertical-align: top; 

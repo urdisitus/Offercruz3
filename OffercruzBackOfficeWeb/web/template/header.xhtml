@@ -7,18 +7,24 @@
       xmlns:h="http://java.sun.com/jsf/html">
     <body>
         <ui:composition>
-            <h:panelGrid columns="1"  style="text-align: center;height: 100px;  background-color: #003882; width: 100%; font-size: 48px; color: white" >
+            <h:panelGrid columns="1"  style="text-align: center;height: 65px;  background:url('/OffercruzBackOfficeWeb/javax.faces.resource/images/ui-bg_gloss-wave_20_111111_500x100.png.xhtml?ln=primefaces-dot-luv') repeat-x scroll 50% top #111111; width: 1024px; font-size: 48px; color: #d9d9d9;" >
                 OfferCruz
             </h:panelGrid>
+            <p:imageSwitch effect="fade" id="fadeEffect" style="margin-bottom: 10px;">
+                <ui:repeat value="#{galeriaPortada.images}" var="image" id="fadeEffectImages">
+                    <p:graphicImage name="/images/#{image}" id="image" />
+                </ui:repeat>
+            </p:imageSwitch>
             <h:form id="menuForm"> 
                 <p:menubar id="mainmenu">  
                     <p:menuitem value="Inicio"  url="/index.xhtml" />
                     <p:submenu rendered="#{loginBean.loggedIn}" label="Gesti&oacute;n de usuario">
                         <p:menuitem rendered="#{loginBean.verificarPermiso(1000)}"  value="Usuario"  url="/gestion/usuarios/usuarios.xhtml" />
-                        <p:menuitem rendered="#{loginBean.verificarPermiso(2000)}"  value="Perfil"  url="/gestion/usuarios/usuarios.xhtml" />                        
+                        <p:menuitem rendered="#{loginBean.verificarPermiso(2000)}"  value="Perfil"  url="/gestion/usuarios/perfiles.xhtml" />                        
+                        <p:menuitem value="Cambiar Contraseña"  url="/gestion/usuarios/cambiarContrasena.xhtml" />                        
+                        <p:menuitem rendered="#{loginBean.verificarPermiso(4000)}"  value="Categoria"  url="/gestion/usuarios/categorias.xhtml" />
                     </p:submenu>
-                    <p:submenu rendered="#{loginBean.loggedIn}" label="Gesti&oacute;n de empresa">
-                        <p:menuitem rendered="#{loginBean.verificarPermiso(3000)}"  value="Categoria"  url="/gestion/usuarios/usuarios.xhtml" />
+                    <p:submenu rendered="#{loginBean.loggedIn}" label="Gesti&oacute;n de empresa">                        
                     </p:submenu>
                     <p:menuitem value="Iniciar Sesi&oacute;n" rendered="#{!loginBean.loggedIn}"  url="/login.xhtml" />
                     <p:menuitem value="Cerrar Sesi&oacute;n" rendered="#{loginBean.loggedIn}" url="/closelogin.xhtml"/>

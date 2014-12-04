@@ -3,15 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package bo.com.offercruz.beans;
 
 import bo.com.offercruz.bl.contratos.IPerfilBO;
+import bo.com.offercruz.bl.contratos.IPermisoBO;
 import bo.com.offercruz.bl.impl.control.FactoriaObjetosNegocio;
 import bo.com.offercruz.entidades.Perfil;
 import bo.com.offercruz.entidades.Permiso;
 import bo.com.offercruz.utils.MyTreeNode;
 import java.util.ArrayList;
+import java.util.Set;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -26,7 +27,7 @@ import org.primefaces.model.TreeNode;
  */
 @ManagedBean
 @RequestScoped
-public class PerfilBean  extends  BeanGenerico<Perfil, IPerfilBO>{
+public class PerfilBean extends BeanGenerico<Perfil, IPerfilBO> {
 
     private TreeNode[] selectedNodes;
     private TreeNode raizPermisos;
@@ -91,7 +92,7 @@ public class PerfilBean  extends  BeanGenerico<Perfil, IPerfilBO>{
             marcarPermisoR(raizPermisos.getChildren().get(i), listaPermisos);
         }
         try {
-//            getObjetoNegocio().guardarPermisos(listaPermisos);
+            //  getObjetoNegocio().guardarPermisos(listaPermisos);   
         } catch (Exception e) {
             guardo = false;
             System.out.println(e);
@@ -132,29 +133,47 @@ public class PerfilBean  extends  BeanGenerico<Perfil, IPerfilBO>{
         return false;
     }
 
-//    public void seleccionarRolPermisos(Rol entidad) {
-//        this.permisosSeleccionado =  entidad;
-//        crearArbolPermisos(entidad);
-//    }
-//    private void crearArbolPermisos(Perfil rol) {
-//        List<Perfil> raiz = getObjetoNegocio().obtenerTodos();
-//        //System.out.println("Longitud de la lista " + raiz.size());
-//        raizPermisos = new MyTreeNode("raiz", null);
-//        //raizPermisos.setExpanded(true);
-//        TreeNode treeControlTotal = new MyTreeNode(raiz.get(0), raizPermisos);
+    public void seleccionarPerfilPermisos(Perfil entidad) {
+        this.permisosSeleccionado = entidad;
+        crearArbolPermisos(entidad);
+    }
+
+    private void crearArbolPermisos(Perfil perfil) {
+        IPermisoBO permisosBO = FactoriaObjetosNegocio.getInstance().getIPermisoBO();
+        List<Permiso> raiz = permisosBO.getPermisosRaiz();
+        //System.out.println("Longitud de la lista " + raiz.size());
+        raizPermisos = new MyTreeNode("raiz", null);
+        //raizPermisos.setExpanded(true);                
+        for (Permiso permiso : raiz) {
+            TreeNode treeControlTotal = new MyTreeNode(permiso, raizPermisos);
+            treeControlTotal.setExpanded(true);
+            CrearPermisosR(permiso, treeControlTotal, perfil.getPermisos());
+        }
+        
+//        
 //        treeControlTotal.setExpanded(true);
-//
-//        CrearPermisosR(raiz.get(0), treeControlTotal);
-//    }
-//    private void CrearPermisosR(RolPermiso padre, TreeNode treePadre) {
-//        List<RolPermiso> hijos = getObjetoNegocio().getPermisos(padre.getId().getIdRol(), padre.getId().getIdPermiso());
-//        TreeNode node;
-//        for (RolPermiso rolPermiso : hijos) {
-//            node = new MyTreeNode(rolPermiso, treePadre);
-//            node.setExpanded(true);
-//            node.setSelected(rolPermiso.isValor());
-//            CrearPermisosR(rolPermiso, node);
-//        }
-//    }
-    
+//        
+//        treeControlTotal.setSelected(raiz.get(0).isValor());
+//        CrearPermisosR(raiz.get(0), treeControlTotal, perfil.getPermisos());
+    }
+
+    private void CrearPermisosR(Permiso padre, TreeNode treePadre, Set<Permiso> perfilPermisos) {
+        IPermisoBO permisosBO = FactoriaObjetosNegocio.getInstance().getIPermisoBO();
+        //List<Permiso> todos = permisosBO.obtenerTodos();
+        List<Permiso> hijos = permisosBO.getPermisosHijos(padre.getId());
+        TreeNode node;
+        for (Permiso rolPermiso : hijos) {
+            node = new MyTreeNode(rolPermiso, treePadre);
+            node.setExpanded(true);
+            for (Permiso per : perfilPermisos) {
+                if(per.getId().intValue() == rolPermiso.getId().intValue()){
+                    rolPermiso.setValor(true);
+                    break;
+                }
+            }
+            node.setSelected(rolPermiso.isValor());
+            CrearPermisosR(rolPermiso, node, perfilPermisos);
+        }
+    }
+
 }
