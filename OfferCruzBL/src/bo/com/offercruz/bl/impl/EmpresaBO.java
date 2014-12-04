@@ -76,7 +76,7 @@ public class EmpresaBO extends ObjetoNegocioGenerico<Empresa, Integer, IEmpresaD
                 if ((getDaoManager().getUsuarioDAO().getIdUsuarioPorCorreoElectronico(entity.getCorreoElectronico()) != null)) {
                     appendException(new BusinessExceptionMessage("El email " + entity.getCorreoElectronico() + " ya esta registrado", "email"));
                 }
-            } else if (getObjetoDAO().checkId(entity.getId())) { 
+            } else if (getObjetoDAO().checkId(entity.getId())) {
                 Empresa emp = getDaoManager().getEmpresaDAO().recuperarPorId(entity.getId());
                 Usuario actual = getDaoManager().getUsuarioDAO().obtenerPorId(emp.getUsuario().getId());
                 if (!actual.getCorreoElectronico().equalsIgnoreCase(entity.getCorreoElectronico())) {
@@ -90,7 +90,6 @@ public class EmpresaBO extends ObjetoNegocioGenerico<Empresa, Integer, IEmpresaD
         }
 
         // VALIDAR FECHA
-        
         //Permisos 
         if (!entity.getCategorias().isEmpty()) {
 //            appendException(new BusinessExceptionMessage("La empresa debe tener una o mas categorias asignadas.", "categorias"));
@@ -117,6 +116,14 @@ public class EmpresaBO extends ObjetoNegocioGenerico<Empresa, Integer, IEmpresaD
                 pp.setId(permisoDAO.obtenerIdPorNombre(pp.getNombre()));
             }
         }
+
+        if (!entity.getCategorias().isEmpty()) {
+            for (Object object : entity.getCategorias()) {
+                Categoria f = (Categoria) object;
+                int id = getDaoManager().getOfertaDAO().getIdPorNombre(f.getNombre());
+                f.setId(id);
+            }
+        }
     }
 
     @Override
@@ -138,16 +145,16 @@ public class EmpresaBO extends ObjetoNegocioGenerico<Empresa, Integer, IEmpresaD
         user.setPassword(encriptar(UsuarioBO.cadenaAleatoria(15)));
         entidad.setUsuario(objUsuario.persistir(user));
     }
-    
+
     public String encriptar(String texto) {
         return UsuarioBO.getStringMessageDigest(texto, SHA256);
     }
 
     @Override
     protected void preActualizar(Empresa entidad) {
-       // IUsuarioDAO 
+        // IUsuarioDAO 
         entidad.setFechaModificacion(new Date());
-        
+
     }
 
 }

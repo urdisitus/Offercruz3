@@ -15,6 +15,7 @@ import bo.com.offercruz.bl.impl.control.FactoriaObjetosNegocio;
 import bo.com.offercruz.entidades.Categoria;
 import bo.com.offercruz.entidades.Empresa;
 import bo.com.offercruz.entidades.Imagen;
+import bo.com.offercruz.entidades.Oferta;
 import bo.com.offercruz.entidades.Perfil;
 import bo.com.offercruz.entidades.Permiso;
 import java.util.ArrayList;
@@ -44,10 +45,10 @@ public class EmpresaBean extends BeanGenerico<Empresa, IEmpresaBO> {
 
     private int idCategoria;
     private UploadedFile file;
-    private DualListModel<Categoria> CateList = new DualListModel<Categoria>();
+    private DualListModel<String> CateList = new DualListModel<String>();
     private Empresa empresaSeleccionada;
     private List<Categoria> puntero;
-    
+
     /**
      * Creates a new instance of EmpresaBean
      */
@@ -63,11 +64,11 @@ public class EmpresaBean extends BeanGenerico<Empresa, IEmpresaBO> {
         return empresaSeleccionada;
     }
 
-    public void setCateList(DualListModel<Categoria> CateList) {
+    public void setCateList(DualListModel<String> CateList) {
         this.CateList = CateList;
     }
 
-    public DualListModel<Categoria> getCateList() {
+    public DualListModel<String> getCateList() {
         return CateList;
     }
 
@@ -153,22 +154,37 @@ public class EmpresaBean extends BeanGenerico<Empresa, IEmpresaBO> {
                 }
             }
         }
-        CateList.setSource(TodasCategorias);
-        CateList.setTarget(CategoriaEmpresa);
+        List<String> source = new ArrayList<String>();
+        for (int y = 0; y < TodasCategorias.size(); y++) {
+            source.add(TodasCategorias.get(y).getNombre());
+        }
+        List<String> target = new ArrayList<String>();
+        for (int x = 0; x < CategoriaEmpresa.size(); x++) {
+            target.add(CategoriaEmpresa.get(x).getNombre());
+        }
+        CateList.setSource(source);
+        CateList.setTarget(target);
     }
 
     public void guardarCategorías() {
         RequestContext context = RequestContext.getCurrentInstance();
         FacesMessage msg;
         boolean guardo = true;
-        Set<Categoria> listaCategorias = new HashSet<Categoria>(CateList.getTarget());
 
         try {
+
             if (empresaSeleccionada != null) {
-                    empresaSeleccionada.setCategorias(listaCategorias);
-                    getObjetoNegocio().actualizar(empresaSeleccionada);
+
+                List<Categoria> cat = new ArrayList<Categoria>();
+                for (String string : CateList.getTarget()) {
+                    Categoria oo = new Categoria();
+                    oo.setNombre(string);
+                    cat.add(oo);
+                }
+                empresaSeleccionada.setCategorias(new HashSet(cat));
+                getObjetoNegocio().actualizar(empresaSeleccionada);
             }
-            
+
         } catch (Exception e) {
             guardo = false;
             System.out.println(e);
