@@ -159,5 +159,4 @@ public class OfertaBO extends ObjetoNegocioGenerico<Oferta, Integer, IOfertaDAO>
     protected void preActualizar(Oferta entidad) {
         entidad.setFechaModificacion(new Date());
     }
-
 }
