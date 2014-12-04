@@ -34,6 +34,8 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DualListModel;
 import org.primefaces.model.UploadedFile;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -44,15 +46,14 @@ import org.primefaces.model.UploadedFile;
 public class EmpresaBean extends BeanGenerico<Empresa, IEmpresaBO> {
 
     private int idCategoria;
-    private UploadedFile file;
     private DualListModel<String> CateList = new DualListModel<String>();
-    private Empresa empresaSeleccionada;    
+    private Empresa empresaSeleccionada;
 
     /**
      * Creates a new instance of EmpresaBean
      */
     public EmpresaBean() {
-
+        System.out.println("entro a empresa");
     }
 
     public void setEmpresaSeleccionada(Empresa empresaSeleccionada) {
@@ -69,23 +70,13 @@ public class EmpresaBean extends BeanGenerico<Empresa, IEmpresaBO> {
 
     @Override
     public void guardar() {
-        RequestContext context = RequestContext.getCurrentInstance();        
+        RequestContext context = RequestContext.getCurrentInstance();
         super.guardar(); //To change body of generated methods, choose Tools | Templates.
         context.addCallbackParam("guardo", guardo);
     }
-    
-    
 
     public DualListModel<String> getCateList() {
         return CateList;
-    }
-
-    public UploadedFile getFile() {
-        return file;
-    }
-
-    public void setFile(UploadedFile file) {
-        this.file = file;
     }
 
     public void setIdCategoria(int idCategoria) {
@@ -125,26 +116,34 @@ public class EmpresaBean extends BeanGenerico<Empresa, IEmpresaBO> {
         }
     }
 
-    public void AbrirDialogN() {
-        prepararInsertar();
-    }
-
     @Override
     public void preInsertar(Empresa entidad) {
-        if (file != null) {
-            if (file.getContentType().equals("image/jpeg") || file.getContentType().equals("image/png")) {
-                Imagen img = new Imagen();
-                img.setNombre(file.getFileName());
-                img.setImagenFisica((Base64.encodeBase64String(file.getContents())));
-                img.setFechaCreacion(new Date());
-                img.setFechaModificacion(new Date());
-                img.setEstado(1);
-                entidad.setImagen(img);
-                FacesMessage message = new FacesMessage("Succesful", file.getFileName() + " is uploaded.");
-                FacesContext.getCurrentInstance().addMessage(null, message);
-            }
+//        if (file != null) {
+//            Imagen img = new Imagen();
+//            img.setNombre(file.getFileName());
+//            img.setImagenFisica((Base64.encodeBase64String(file.getContents())));
+//            img.setFechaCreacion(new Date());
+//            img.setFechaModificacion(new Date());
+//            img.setEstado(1);
+//            entidad.setImagen(img);
+//            FacesMessage message = new FacesMessage("Succesful", file.getFileName() + " is uploaded.");
+//            FacesContext.getCurrentInstance().addMessage(null, message);
+//        }
+    }
 
+    public void cargarImagen(FileUploadEvent event) {
+        FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
+        if (event.getFile() != null) {
+            Imagen img = new Imagen();
+            img.setNombre(event.getFile().getFileName());
+            img.setImagenFisica((Base64.encodeBase64String(event.getFile().getContents())));
+            img.setFechaCreacion(new Date());
+            img.setFechaModificacion(new Date());
+            img.setEstado(1);
+            empresaSeleccionada.setImagen(img);
         }
+        FacesContext.getCurrentInstance().addMessage(null, message);
+
     }
 
     public void seleccionarEmpresaCategorias(Empresa entidad) {
@@ -159,7 +158,7 @@ public class EmpresaBean extends BeanGenerico<Empresa, IEmpresaBO> {
         List<String> target = new ArrayList<String>();
         for (Categoria categoria : TodasCategorias) {
             boolean existe = false;
-            for (Categoria cat : CategoriaEmpresa) {                
+            for (Categoria cat : CategoriaEmpresa) {
                 if (categoria.getId() == cat.getId()) {
                     existe = true;
                     break;
