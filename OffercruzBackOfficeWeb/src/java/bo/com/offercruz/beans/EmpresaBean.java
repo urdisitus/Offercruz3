@@ -8,16 +8,22 @@ package bo.com.offercruz.beans;
 import bo.com.offercruz.bl.contratos.IEmpresaBO;
 import bo.com.offercruz.bl.contratos.IImagenBO;
 import bo.com.offercruz.bl.contratos.IUsuarioBO;
+import bo.com.offercruz.bl.impl.CategoriaBO;
 import bo.com.offercruz.bl.impl.EmpresaBO;
 import bo.com.offercruz.bl.impl.ImagenBO;
 import bo.com.offercruz.bl.impl.control.FactoriaObjetosNegocio;
 import bo.com.offercruz.entidades.Categoria;
 import bo.com.offercruz.entidades.Empresa;
 import bo.com.offercruz.entidades.Imagen;
+import bo.com.offercruz.entidades.Perfil;
 import bo.com.offercruz.entidades.Permiso;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -25,6 +31,7 @@ import javax.faces.context.FacesContext;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DualListModel;
 import org.primefaces.model.UploadedFile;
 
 /**
@@ -37,8 +44,33 @@ public class EmpresaBean extends BeanGenerico<Empresa, IEmpresaBO> {
 
     private int idCategoria;
     private UploadedFile file;
-
+    private DualListModel<Categoria> CateList = new DualListModel<Categoria>();
+    private Empresa empresaSeleccionada;
+    private List<Categoria> puntero;
     
+    /**
+     * Creates a new instance of EmpresaBean
+     */
+    public EmpresaBean() {
+
+    }
+
+    public void setEmpresaSeleccionada(Empresa empresaSeleccionada) {
+        this.empresaSeleccionada = empresaSeleccionada;
+    }
+
+    public Empresa getEmpresaSeleccionada() {
+        return empresaSeleccionada;
+    }
+
+    public void setCateList(DualListModel<Categoria> CateList) {
+        this.CateList = CateList;
+    }
+
+    public DualListModel<Categoria> getCateList() {
+        return CateList;
+    }
+
     public UploadedFile getFile() {
         return file;
     }
@@ -53,13 +85,6 @@ public class EmpresaBean extends BeanGenerico<Empresa, IEmpresaBO> {
 
     public int getIdCategoria() {
         return idCategoria;
-    }
-
-    /**
-     * Creates a new instance of EmpresaBean
-     */
-    public EmpresaBean() {
-        
     }
 
     @Override
@@ -111,5 +136,49 @@ public class EmpresaBean extends BeanGenerico<Empresa, IEmpresaBO> {
             }
 
         }
+    }
+
+    public void seleccionarEmpresaCategorias(Empresa entidad) {
+        this.empresaSeleccionada = entidad;
+        LlenarListas(entidad);
+    }
+
+    public void LlenarListas(Empresa entidad) {
+        List<Categoria> TodasCategorias = FactoriaObjetosNegocio.getInstance().getICategoriaBO().obtenerTodos();
+        List<Categoria> CategoriaEmpresa = new ArrayList<Categoria>(entidad.getCategorias());
+        for (int i = 0; i < TodasCategorias.size(); i++) {
+            for (int j = 0; j < CategoriaEmpresa.size(); j++) {
+                if (TodasCategorias.get(i).getId() == CategoriaEmpresa.get(j).getId()) {
+                    TodasCategorias.remove(i);
+                }
+            }
+        }
+        CateList.setSource(TodasCategorias);
+        CateList.setTarget(CategoriaEmpresa);
+    }
+
+    public void guardarCategorías() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        FacesMessage msg;
+        boolean guardo = true;
+        Set<Categoria> listaCategorias = new HashSet<Categoria>(CateList.getTarget());
+
+        try {
+            if (empresaSeleccionada != null) {
+                    empresaSeleccionada.setCategorias(listaCategorias);
+                    getObjetoNegocio().actualizar(empresaSeleccionada);
+            }
+            
+        } catch (Exception e) {
+            guardo = false;
+            System.out.println(e);
+        }
+        if (guardo) {
+            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "Categorias guardadas correctamente.");
+        } else {
+            msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Error", "No se pudieron guardar las Categorias.");
+        }
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        context.addCallbackParam("guardo", guardo);
     }
 }
