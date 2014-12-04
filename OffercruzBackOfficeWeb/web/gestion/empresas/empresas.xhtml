@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:metadata>
+        <f:event type="preRenderView" listener="true" />
+    </f:metadata>
+    <h:head>
+        <title>Gestionar empresas</title>
+    </h:head>
+    <h:body>
+        <ui:decorate template="../../template/layout.xhtml">
+            <ui:define name="content">
+                <h2 style="text-align: center">
+                    Gestión de empresas
+                </h2>
+                <p:messages id="growl"  autoUpdate="true" showDetail="true" closable="true" />
+                <h:form id="botones">
+                    <p:commandButton   
+                        actionListener="#{empresaBean.abrirDialog()}"
+                        update=":frmNuevo:dlgEmpresa" oncomplete="PF('dlgEmpresa').show()"  
+                        value="Adicionar" id="add"  icon="icon-add">                    
+                    </p:commandButton>
+                </h:form>
+                <h:form id="frmNuevo">
+                    <p:dialog header="Nueva empresa" widgetVar="dlgEmpresa" resizable="false" showEffect="fade" hideEffect="explode" modal="true" id="dlgEmpresa" style="left: 540.5px; width: 600px">  
+                        <p:scrollPanel style="height:450px; width: 581px" mode="native"> 
+                            <h3>Razón social</h3>
+                            <p:inputText maxlength="50" style="width: 524px"/>
+                            <br/>
+                            <h:outputText id="display1" />
+                            <h3>slogan</h3>
+                            <p:inputTextarea rows="2" cols="50" counter="display2" maxlength="100" counterTemplate="{0} Caracteres restantes." autoResize="true" style="width: 524px; resize: none" />
+                            <br/>
+                            <h:outputText id="display2" />   
+                            <h3>Misión</h3>
+                            <p:inputTextarea rows="2" cols="50" counter="display3" maxlength="100" counterTemplate="{0} Caracteres restantes." autoResize="true" style="width: 524px"  />
+                            <br/>
+                            <h:outputText id="display3" />  
+                            <h3>Visión</h3>
+                            <p:inputTextarea rows="2" cols="50" counter="display4" maxlength="100" counterTemplate="{0} Caracteres restantes." autoResize="true" style="width: 524px" />
+                            <br/>
+                            <h:outputText id="display4" />  
+                            <h3>Teléfono</h3>
+                            <p:inputTextarea rows="2" cols="50" counter="display5" maxlength="10" counterTemplate="{0} Caracteres restantes." autoResize="true" style="width: 524px"  />
+                            <br/>
+                            <h:outputText id="display5" />  
+                            <h3>Dirección</h3>
+                            <p:inputTextarea rows="2" cols="50" counter="display6" maxlength="100" counterTemplate="{0} Caracteres restantes." autoResize="true" style="width: 524px"  />
+                            <br/>
+                            <h:outputText id="display6" />  
+                            <h3>Tipo de sociedad</h3>
+                            <p:inputTextarea rows="2" cols="50" counter="display7" maxlength="30" counterTemplate="{0} Caracteres restantes." autoResize="true" style="width: 524px"  />
+                            <br/>
+                            <h:outputText id="display7" />  
+                            <h3>NIT</h3>
+                            <p:inputTextarea rows="2" cols="50" counter="display8" maxlength="50" counterTemplate="{0} Caracteres restantes." autoResize="true" style="width: 524px"  />
+                            <br/>
+                            <h:outputText id="display8" />  
+                            <h3>Fecha Apertura</h3>
+                            <p:calendar id="button"  showOn="button" />  
+                            <h3>FAX</h3>
+                            <p:inputTextarea rows="2" cols="50" counter="display10" maxlength="50" counterTemplate="{0} Caracteres restantes." autoResize="true" style="width: 524px"  />
+                            <br/>
+                            <h:outputText id="display10" />  
+                            <h3>Logotipo</h3>
+                            <p:fileUpload  mode="simple" /> 
+
+                        </p:scrollPanel>
+                        <p:separator/>
+                        <p:commandButton value="Guardar"   oncomplete="handleSaveRequest(xhr, status, args)" update=":growl" icon="icon-save"/>  
+                        <p:commandButton value="Cancelar" onclick="PF('dlgEmpresa').hide();" ajax="false" type="button" icon="icon-cancel"/>  
+                    </p:dialog>
+                </h:form>
+                <br/>
+                <h:panelGrid columns="2" columnClasses="topAligned" width="100%" cellpadding="5">
+                    <h:form id="lista">
+                        <p:dataTable emptyMessage="No se han encontrado registros" var="entidad" 
+                                     value="#{empresaBean.obtenerTodos()}"
+                                     binding="#{tabla}" style="width: 100%; text-align: center" >
+                            <p:column headerText="#" style="width: 10%" >  
+                                <h:outputText value="#{tabla.rowIndex + 1}" />  
+                            </p:column>  
+                            <p:column headerText="Nombre" >  
+                                <h:outputText value="#{entidad.razonSocial}" />  
+                            </p:column> 
+                            <p:column headerText="Estado" >  
+                                <h:outputText value="#{empresaBean.getEstado(entidad.estado)}" />  
+                            </p:column>                 
+                            <p:column headerText="Logotipo" >  
+                                <img src="data:image;base64,#{entidad.imagen.imagenFisica}" title="Imagen" />
+                            </p:column>
+                            <p:column style="width:10%; text-align: center">  
+                                <p:commandButton  oncomplete="foco();" 
+                                                  icon="icon-edit" title="Editar"
+                                                  actionListener="#{empresaBean.seleccionarEntidad(entidad)}"                                                  
+                                                  />
+                            </p:column> 
+                        </p:dataTable>
+                    </h:form>
+                </h:panelGrid >
+                <script type="text/javascript">
+                    function foco() {
+                        var t = document.getElementById('main:descripcion');
+                        t.focus();
+                        t.select();
+                    }
+
+                    function handleSaveRequest(xhr, status, args) {
+                        if (args.validationFailed || !args.guardo) {
+                            jQuery('#dlgEmpresa').effect("shake", {times: 3}, 100);
+                        }
+                        else {
+                            PF('dlgEmpresa').hide();
+                        }
+                    }
+                </script> 
+            </ui:define>
+        </ui:decorate>
+    </h:body>
+</html>

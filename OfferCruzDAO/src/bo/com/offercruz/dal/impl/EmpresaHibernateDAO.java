@@ -27,8 +27,10 @@ public class EmpresaHibernateDAO extends DAOGenericoHibernate<Empresa, Integer> 
 
     @Override
     public List<Empresa> obtenerTodos() {
-        List<Empresa> empresas = super.obtenerTodos(); //To change body of generated methods, choose Tools | Templates.
+        List<Empresa> empresas = super.obtenerTodos(); //To change body of generated methods, choose Tools | Templates.      
         for (Empresa empresa : empresas) {
+            if(empresa.getImagen()!=null)
+                 System.out.println(empresa.getImagen().getNombre());
             for (Object object : empresa.getCategorias()) {
                 Categoria c = (Categoria) object;
                 System.out.println(c.getNombre());
@@ -41,6 +43,8 @@ public class EmpresaHibernateDAO extends DAOGenericoHibernate<Empresa, Integer> 
     @Override
     public Empresa obtenerPorId(Integer id) {
         Empresa empresa = super.obtenerPorId(id); //To change body of generated methods, choose Tools | Templates.
+        if(empresa.getImagen()!=null)
+            System.out.println(empresa.getImagen().getNombre());
         for (Object object : empresa.getCategorias()) {
             Categoria c = (Categoria) object;
             System.out.println(c.getNombre());
@@ -51,6 +55,7 @@ public class EmpresaHibernateDAO extends DAOGenericoHibernate<Empresa, Integer> 
     @Override
     public Empresa recuperarPorId(Integer id) {
         Empresa empresa = super.recuperarPorId(id); //To change body of generated methods, choose Tools | Templates.
+        System.out.println(empresa.getImagen().getNombre());
         for (Object object : empresa.getCategorias()) {
             Categoria c = (Categoria) object;
             System.out.println(c.getNombre());
