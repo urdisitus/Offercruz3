@@ -20,58 +20,48 @@
                 <p:messages id="growl"  autoUpdate="true" showDetail="true" closable="true" />
                 <h:form id="botones">
                     <p:commandButton   
-                        actionListener="#{empresaBean.abrirDialog()}"
-                        update=":frmNuevo:dlgEmpresa" oncomplete="PF('dlgEmpresa').show()"  
-                        value="Adicionar" id="add"  icon="icon-add">                    
-                    </p:commandButton>
+                        actionListener="#{empresaBean.abrirDialogN()}"
+                        update=":frmNuevo:dlgEmpresa" oncomplete="PF('dlgEmpresa').show();"  
+                        value="Adicionar" id="add"  icon="icon-add"                    
+                    />
                 </h:form>
                 <h:form id="frmNuevo">
-                    <p:dialog header="Nueva empresa" widgetVar="dlgEmpresa" resizable="false" showEffect="fade" hideEffect="explode" modal="true" id="dlgEmpresa" style="left: 540.5px; width: 600px">  
+                    <p:dialog header="Empresa" widgetVar="dlgEmpresa" resizable="false" showEffect="fade" hideEffect="explode" modal="true" id="dlgEmpresa" style="left: 540.5px; width: 600px">  
                         <p:scrollPanel style="height:450px; width: 581px" mode="native"> 
                             <h3>Razón social</h3>
-                            <p:inputText maxlength="50" style="width: 524px"/>
-                            <br/>
-                            <h:outputText id="display1" />
+                            <p:inputText value="#{empresaBean.entidad.razonSocial}" maxlength="50" style="width: 524px"/>
                             <h3>slogan</h3>
-                            <p:inputTextarea rows="2" cols="50" counter="display2" maxlength="100" counterTemplate="{0} Caracteres restantes." autoResize="true" style="width: 524px; resize: none" />
+                            <p:inputTextarea value="#{empresaBean.entidad.slogan}" rows="2" cols="50" counter="display2" maxlength="100" counterTemplate="{0} Caracteres restantes." autoResize="true" style="width: 524px; resize: none" />
                             <br/>
-                            <h:outputText id="display2" />   
+                            <h:outputText  id="display2" />   
                             <h3>Misión</h3>
-                            <p:inputTextarea rows="2" cols="50" counter="display3" maxlength="100" counterTemplate="{0} Caracteres restantes." autoResize="true" style="width: 524px"  />
+                            <p:inputTextarea value="#{empresaBean.entidad.mision}" rows="2" cols="50" counter="display3" maxlength="100" counterTemplate="{0} Caracteres restantes." autoResize="true" style="width: 524px"  />
                             <br/>
                             <h:outputText id="display3" />  
                             <h3>Visión</h3>
-                            <p:inputTextarea rows="2" cols="50" counter="display4" maxlength="100" counterTemplate="{0} Caracteres restantes." autoResize="true" style="width: 524px" />
+                            <p:inputTextarea value="#{empresaBean.entidad.vision}" rows="2" cols="50" counter="display4" maxlength="100" counterTemplate="{0} Caracteres restantes." autoResize="true" style="width: 524px" />
                             <br/>
                             <h:outputText id="display4" />  
-                            <h3>Teléfono</h3>
-                            <p:inputTextarea rows="2" cols="50" counter="display5" maxlength="10" counterTemplate="{0} Caracteres restantes." autoResize="true" style="width: 524px"  />
-                            <br/>
-                            <h:outputText id="display5" />  
+                            <h3>Teléfono</h3>                           
+                            <p:inputText value="#{empresaBean.entidad.telefono}" maxlength="10" style="width: 524px"/>
                             <h3>Dirección</h3>
-                            <p:inputTextarea rows="2" cols="50" counter="display6" maxlength="100" counterTemplate="{0} Caracteres restantes." autoResize="true" style="width: 524px"  />
+                            <p:inputTextarea value="#{empresaBean.entidad.direccion}" rows="2" cols="50" counter="display6" maxlength="100" counterTemplate="{0} Caracteres restantes." autoResize="true" style="width: 524px"  />
                             <br/>
                             <h:outputText id="display6" />  
                             <h3>Tipo de sociedad</h3>
-                            <p:inputTextarea rows="2" cols="50" counter="display7" maxlength="30" counterTemplate="{0} Caracteres restantes." autoResize="true" style="width: 524px"  />
-                            <br/>
-                            <h:outputText id="display7" />  
+                            <p:inputText value="#{empresaBean.entidad.tipoSociedad}" maxlength="30" style="width: 524px"/> 
                             <h3>NIT</h3>
-                            <p:inputTextarea rows="2" cols="50" counter="display8" maxlength="50" counterTemplate="{0} Caracteres restantes." autoResize="true" style="width: 524px"  />
-                            <br/>
-                            <h:outputText id="display8" />  
+                            <p:inputText value="#{empresaBean.entidad.nit}" maxlength="50" style="width: 524px"/> 
                             <h3>Fecha Apertura</h3>
-                            <p:calendar id="button"  showOn="button" />  
+                            <p:calendar value="#{empresaBean.entidad.fechaApertura}" id="button"  showOn="button" onkeypress="return CalendarioPress();" />  
                             <h3>FAX</h3>
-                            <p:inputTextarea rows="2" cols="50" counter="display10" maxlength="50" counterTemplate="{0} Caracteres restantes." autoResize="true" style="width: 524px"  />
-                            <br/>
-                            <h:outputText id="display10" />  
+                            <p:inputText value="#{empresaBean.entidad.fax}" maxlength="50" style="width: 524px"/>
                             <h3>Logotipo</h3>
-                            <p:fileUpload  mode="simple" /> 
+                            <p:fileUpload value="#{empresaBean.file}" mode="simple" /> 
 
                         </p:scrollPanel>
                         <p:separator/>
-                        <p:commandButton value="Guardar"   oncomplete="handleSaveRequest(xhr, status, args)" update=":growl" icon="icon-save"/>  
+                        <p:commandButton value="Guardar" actionListener="#{empresaBean.guardar()}"   oncomplete="" update=":growl, :frmNuevo, :lista" icon="icon-save"/>  
                         <p:commandButton value="Cancelar" onclick="PF('dlgEmpresa').hide();" ajax="false" type="button" icon="icon-cancel"/>  
                     </p:dialog>
                 </h:form>
@@ -103,10 +93,8 @@
                     </h:form>
                 </h:panelGrid >
                 <script type="text/javascript">
-                    function foco() {
-                        var t = document.getElementById('main:descripcion');
-                        t.focus();
-                        t.select();
+                    function CalendarioPress() {
+                        return false;
                     }
 
                     function handleSaveRequest(xhr, status, args) {
@@ -115,6 +103,11 @@
                         }
                         else {
                             PF('dlgEmpresa').hide();
+                        }
+                        function MostrarN() {
+                            var t = document.getElementById('encabezado');
+                            t.textContent = 'Nuevaa Empresa';
+                            PF('dlgEmpresa').show();
                         }
                     }
                 </script> 
