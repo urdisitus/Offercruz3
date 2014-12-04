@@ -92,7 +92,7 @@ public class EmpresaBean extends BeanGenerico<Empresa, IEmpresaBO> {
     }
 
     public void AbrirDialogN() {
-        
+        prepararInsertar();
     }
 
     @Override

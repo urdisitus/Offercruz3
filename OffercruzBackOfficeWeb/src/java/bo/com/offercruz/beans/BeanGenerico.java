@@ -31,8 +31,6 @@ public abstract class BeanGenerico<T, U extends IGenericoBO<T, ?>> implements ja
 
     public final void prepararInsertar() {
         entidad = getNuevaEntidad();
-        getObjetoNegocio().setIdUsuario(loginBean.getCurrentUser().getId());
-        getObjetoNegocio().setComandoPermiso(getComandoPermiso());
     }
 
     public T getEntidad() {
@@ -45,10 +43,13 @@ public abstract class BeanGenerico<T, U extends IGenericoBO<T, ?>> implements ja
 
     public void setLoginBean(LoginBean loginBean) {
         this.loginBean = loginBean;
+        getObjetoNegocio().setIdUsuario(loginBean.getCurrentUser().getId());
+        getObjetoNegocio().setComandoPermiso(getComandoPermiso());
     }
 
     public LoginBean getLoginBean() {
         return loginBean;
+        
     }
 
     public void guardar() {
@@ -102,8 +103,6 @@ public abstract class BeanGenerico<T, U extends IGenericoBO<T, ?>> implements ja
     }
 
     public List<T> obtenerTodos() {
-        getObjetoNegocio().setIdUsuario(loginBean.getCurrentUser().getId());
-        getObjetoNegocio().setComandoPermiso(getComandoPermiso());
         return getObjetoNegocio().obtenerTodos();
     }
 
