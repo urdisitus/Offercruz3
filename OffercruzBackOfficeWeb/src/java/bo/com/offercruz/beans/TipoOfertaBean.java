@@ -26,27 +26,11 @@ public class TipoOfertaBean {
     public TipoOfertaBean() {
     }
     
-//    public List<String> obtenerTodos()
-//    {
-//        return Arrays.asList("Producto","Servicios","Ambos");
-//    }
     
     public TipoOferta[] obtenerTodos()
     {
         return TipoOferta.values();
     }
-    
-//    public String obtenerIndividual(int tipo){
-//        switch (tipo) {
-//            case 0:
-//                return "Producto";
-//            case 1:
-//                return "Servicio";
-//            case 2:
-//                return "Ambos";
-//        }
-//        return "";
-//    }
     
     public TipoOferta obtenerIndividual(int index)
     {
@@ -54,15 +38,14 @@ public class TipoOfertaBean {
     }
     
     
-    public TipoOferta obtenerTipoOferta(String oferta){
+    public int obtenerTipoOferta(String oferta){
         if (oferta.equals("Producto")) 
-            return TipoOferta.PRODUCTO;
+            return 0;
         else 
-            
             if (oferta.equals("Servicio"))
-                return TipoOferta.SERVICIO;
+                return 1;
             else
-                return TipoOferta.AMBOS;
+                return 2;
     }
     
 }
