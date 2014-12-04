@@ -7,11 +7,12 @@
 package bo.com.offercruz.dal.contrato;
 
 import bo.com.offercruz.entidades.Contenido;
+import java.util.List;
 
 /**
  *
  * @author Ernesto
  */
 public interface IContenidoDAO extends  IDAOGenerico<Contenido, Integer>{
-    
+    List<Contenido> obtenerTodas(Integer idEmpresa);
 }

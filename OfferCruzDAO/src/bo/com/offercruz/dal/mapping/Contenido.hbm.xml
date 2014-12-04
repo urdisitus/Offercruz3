@@ -2,60 +2,59 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated 20-nov-2014 4:32:22 by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
-  <class catalog="dboffercruz" name="bo.com.offercruz.entidades.Contenido" table="contenido">
-    <id name="id" type="java.lang.Integer">
-      <column name="Id"/>
-      <generator class="identity"/>
-    </id>
-    <property name="tipoContenido" type="int">
-      <column name="TipoContenido" not-null="true"/>
-    </property>
-    <property name="titulo" type="string">
-      <column length="40" name="Titulo" not-null="true"/>
-    </property>
-    <property name="descripcion" type="string">
-      <column length="244" name="Descripcion" not-null="true"/>
-    </property>
-    <property name="estado" type="int">
-      <column name="Estado" not-null="true"/>
-    </property>
-    <property name="fechaPublicacion" type="timestamp">
-      <column length="19" name="FechaPublicacion" not-null="true"/>
-    </property>
-    <property name="fechaExpiracion" type="timestamp">
-      <column length="19" name="FechaExpiracion" not-null="true"/>
-    </property>
-    <property name="fechaCreacion" type="timestamp">
-      <column length="19" name="FechaCreacion" not-null="true"/>
-    </property>
-    <property name="fechaModificacion" type="timestamp">
-      <column length="19" name="FechaModificacion" not-null="true"/>
-    </property>
-    <set fetch="select" inverse="true" lazy="true" name="detallecontenidos" table="detallecontenido">
-      <key>
-        <column name="IdContenido" not-null="true"/>
-      </key>
-      <one-to-many class="bo.com.offercruz.entidades.Detallecontenido"/>
-    </set>
-    <set fetch="select" inverse="true" lazy="true" name="detallecontenidos_1" table="detallecontenido">
-      <key>
-        <column name="IdContenido" not-null="true"/>
-      </key>
-      <one-to-many class="bo.com.offercruz.entidades.Detallecontenido"/>
-    </set>
-    <set fetch="select" inverse="false" lazy="true" name="imagens" table="imagecontenido">
-      <key>
-        <column name="idContenido" not-null="true"/>
-      </key>
-      <many-to-many entity-name="bo.com.offercruz.entidades.Imagen">
-        <column name="idImagen" not-null="true"/>
-      </many-to-many>
-    </set>
-    <set fetch="select" inverse="true" lazy="true" name="solicituds" table="solicitud">
-      <key>
-        <column name="IdContenido"/>
-      </key>
-      <one-to-many class="bo.com.offercruz.entidades.Solicitud"/>
-    </set>
-  </class>
+    <class catalog="dboffercruz" name="bo.com.offercruz.entidades.Contenido" table="contenido">
+        <id name="id" type="java.lang.Integer">
+            <column name="Id"/>
+            <generator class="identity"/>
+        </id>
+        <property name="tipoContenido" type="int">
+            <column name="TipoContenido" not-null="true"/>
+        </property>
+        <many-to-one class="bo.com.offercruz.entidades.Empresa" fetch="select" name="empresa">
+            <column name="IdEmpresa" not-null="true"/>
+        </many-to-one>
+        <property name="titulo" type="string">
+            <column length="40" name="Titulo" not-null="true"/>
+        </property>
+        <property name="descripcion" type="string">
+            <column length="244" name="Descripcion" not-null="true"/>
+        </property>
+        <property name="estado" type="int">
+            <column name="Estado" not-null="true"/>
+        </property>
+        <property name="fechaPublicacion" type="timestamp">
+            <column length="19" name="FechaPublicacion" not-null="true"/>
+        </property>
+        <property name="fechaExpiracion" type="timestamp">
+            <column length="19" name="FechaExpiracion" not-null="true"/>
+        </property>
+        <property name="fechaCreacion" type="timestamp">
+            <column length="19" name="FechaCreacion" not-null="true"/>
+        </property>
+        <property name="fechaModificacion" type="timestamp">
+            <column length="19" name="FechaModificacion" not-null="true"/>
+        </property>
+        <set fetch="select" inverse="false" lazy="true" name="ofertas" table="contenidooferta">
+            <key>
+                <column name="idContenido" not-null="true"/>
+            </key>
+            <many-to-many entity-name="bo.com.offercruz.entidades.Oferta">
+                <column name="idOferta" not-null="true"/>
+            </many-to-many>
+        </set>
+        <set fetch="select" inverse="false" lazy="true" name="imagens" table="imagecontenido">
+            <key>
+                <column name="idContenido" not-null="true"/>
+            </key>
+            <many-to-many entity-name="bo.com.offercruz.entidades.Imagen">
+                <column name="idImagen" not-null="true"/>
+            </many-to-many>
+        </set>
+        <set fetch="select" inverse="true" lazy="true" name="solicituds" table="solicitud">
+            <key>
+                <column name="IdContenido"/>
+            </key>
+            <one-to-many class="bo.com.offercruz.entidades.Solicitud"/>
+        </set>
+    </class>
 </hibernate-mapping>
