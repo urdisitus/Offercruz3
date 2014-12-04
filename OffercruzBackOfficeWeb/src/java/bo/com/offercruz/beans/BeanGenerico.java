@@ -49,13 +49,19 @@ public abstract class BeanGenerico<T, U extends IGenericoBO<T, ?>> implements ja
 
     public LoginBean getLoginBean() {
         return loginBean;
-        
+
     }
+
+    protected boolean guardo;
 
     public void guardar() {
         FacesMessage msg = null;
-        boolean guardo = true;
+        guardo = true;
         try {
+            if (getObjetoNegocio().getIdUsuario() == null) {
+                getObjetoNegocio().setIdUsuario(loginBean.getCurrentUser().getId());
+                getObjetoNegocio().setComandoPermiso(getComandoPermiso());
+            }
             if (esNuevaEntidad(entidad)) {
                 preInsertar(entidad);
                 entidad = getObjetoNegocio().insertar(entidad);
@@ -103,6 +109,10 @@ public abstract class BeanGenerico<T, U extends IGenericoBO<T, ?>> implements ja
     }
 
     public List<T> obtenerTodos() {
+        if (getObjetoNegocio().getIdUsuario() == null) {
+            getObjetoNegocio().setIdUsuario(loginBean.getCurrentUser().getId());
+            getObjetoNegocio().setComandoPermiso(getComandoPermiso());
+        }
         return getObjetoNegocio().obtenerTodos();
     }
 
