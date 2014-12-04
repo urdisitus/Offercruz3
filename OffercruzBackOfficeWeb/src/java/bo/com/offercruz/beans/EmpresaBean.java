@@ -46,8 +46,7 @@ public class EmpresaBean extends BeanGenerico<Empresa, IEmpresaBO> {
     private int idCategoria;
     private UploadedFile file;
     private DualListModel<String> CateList = new DualListModel<String>();
-    private Empresa empresaSeleccionada;
-    private List<Categoria> puntero;
+    private Empresa empresaSeleccionada;    
 
     /**
      * Creates a new instance of EmpresaBean
@@ -67,6 +66,15 @@ public class EmpresaBean extends BeanGenerico<Empresa, IEmpresaBO> {
     public void setCateList(DualListModel<String> CateList) {
         this.CateList = CateList;
     }
+
+    @Override
+    public void guardar() {
+        RequestContext context = RequestContext.getCurrentInstance();        
+        super.guardar(); //To change body of generated methods, choose Tools | Templates.
+        context.addCallbackParam("guardo", guardo);
+    }
+    
+    
 
     public DualListModel<String> getCateList() {
         return CateList;
@@ -147,32 +155,44 @@ public class EmpresaBean extends BeanGenerico<Empresa, IEmpresaBO> {
     public void LlenarListas(Empresa entidad) {
         List<Categoria> TodasCategorias = FactoriaObjetosNegocio.getInstance().getICategoriaBO().obtenerTodos();
         List<Categoria> CategoriaEmpresa = new ArrayList<Categoria>(entidad.getCategorias());
-        for (int i = 0; i < TodasCategorias.size(); i++) {
-            for (int j = 0; j < CategoriaEmpresa.size(); j++) {
-                if (TodasCategorias.get(i).getId() == CategoriaEmpresa.get(j).getId()) {
-                    TodasCategorias.remove(i);
+        List<String> source = new ArrayList<String>();
+        List<String> target = new ArrayList<String>();
+        for (Categoria categoria : TodasCategorias) {
+            boolean existe = false;
+            for (Categoria cat : CategoriaEmpresa) {                
+                if (categoria.getId() == cat.getId()) {
+                    existe = true;
+                    break;
                 }
             }
+            if (existe) {
+                target.add(categoria.getNombre());
+            } else {
+                source.add(categoria.getNombre());
+            }
         }
-        List<String> source = new ArrayList<String>();
-        for (int y = 0; y < TodasCategorias.size(); y++) {
-            source.add(TodasCategorias.get(y).getNombre());
-        }
-        List<String> target = new ArrayList<String>();
-        for (int x = 0; x < CategoriaEmpresa.size(); x++) {
-            target.add(CategoriaEmpresa.get(x).getNombre());
-        }
+//        
+//        for (int y = 0; y < TodasCategorias.size(); y++) {
+//            source.add(TodasCategorias.get(y).getNombre());
+//        }
+//        List<String> target = new ArrayList<String>();
+//        for (int x = 0; x < CategoriaEmpresa.size(); x++) {
+//            target.add(CategoriaEmpresa.get(x).getNombre());
+//        }
         CateList.setSource(source);
         CateList.setTarget(target);
     }
 
-    public void guardarCategorías() {
+    public void guardarCategorias() {
         RequestContext context = RequestContext.getCurrentInstance();
         FacesMessage msg;
         boolean guardo = true;
 
         try {
-
+            if (getObjetoNegocio().getIdUsuario() == null) {
+                getObjetoNegocio().setIdUsuario(getLoginBean().getCurrentUser().getId());
+                getObjetoNegocio().setComandoPermiso(getComandoPermiso());
+            }
             if (empresaSeleccionada != null) {
 
                 List<Categoria> cat = new ArrayList<Categoria>();
