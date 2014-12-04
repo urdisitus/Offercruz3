@@ -73,12 +73,12 @@ public class ContenidoBO extends GestionEmpresaBO<Contenido, Integer, IContenido
         if (entity.getTitulo() == null || entity.getTitulo().equals("")) {
             appendException(new BusinessExceptionMessage("El titulo es un campo requerido.", "titulo"));
         }
-        if (entity.getImagens().isEmpty()) {
-            appendException(new BusinessExceptionMessage("Usd. debe agregar una o mas imagenes al contenido.", "imagenes"));
-        }
-        if (entity.getOfertas().isEmpty()) {
-            appendException(new BusinessExceptionMessage("Usd. debe agregar una o mas ofertas al contenido.", "ofertas"));
-        }
+//        if (entity.getImagens().isEmpty()) {
+//            appendException(new BusinessExceptionMessage("Usd. debe agregar una o mas imagenes al contenido.", "imagenes"));
+//        }
+//        if (entity.getOfertas().isEmpty()) {
+//            appendException(new BusinessExceptionMessage("Usd. debe agregar una o mas ofertas al contenido.", "ofertas"));
+//        }
     }
 
     @Override

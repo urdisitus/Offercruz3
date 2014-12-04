@@ -251,7 +251,7 @@ public abstract class ObjetoNegocioGenerico<T, ID extends Serializable, U extend
      */
     private boolean tienePermiso() {
         if(comandoPermiso != null && (comandoPermiso.equals("cambiar_pass") || comandoPermiso.equals("permiso"))){
-            
+            return true;
         }
         if(usuarioActual== null && idUsuario!= null){               
             usuarioActual = getDaoManager().getUsuarioDAO().recuperarPorId(idUsuario);
