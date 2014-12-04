@@ -33,9 +33,17 @@ public class PermisoHibernateDAO extends DAOGenericoHibernate<Permiso, Integer> 
     }
 
     @Override
-    public List<Permiso> obtenerPermisosHijos(Integer idPermiso) {
-        Query query = getSession().createQuery("select p from Permiso p WHERE p.permisoPadreId = :idPermiso ");
+    public List<Permiso> obtenerPermisosHijosPorTipo(Integer idPermiso, int tipo) {
+        Query query = getSession().createQuery("select p from Permiso p WHERE p.permisoPadreId = :idPermiso AND p.tipo = :tipo ");
         query.setParameter("idPermiso", idPermiso);
+        query.setParameter("tipo", tipo);
+        return query.list();
+    }
+    
+    @Override
+    public List<Permiso> obtenerPermisosHijos(Integer idPermisoPadre) {
+        Query query = getSession().createQuery("select p from Permiso p WHERE p.permisoPadreId = :idPermisoPadre ");
+        query.setParameter("idPermisoPadre", idPermisoPadre);
         return query.list();
     }
 
@@ -48,8 +56,9 @@ public class PermisoHibernateDAO extends DAOGenericoHibernate<Permiso, Integer> 
     }
 
     @Override
-    public List<Permiso> obtenerPermisosPadres() {
-        Query query = getSession().createQuery("select p from Permiso p WHERE p.permisoPadreId = null ");
+    public List<Permiso> obtenerPermisosPadres(int tipo) {
+        Query query = getSession().createQuery("select p from Permiso p WHERE p.permisoPadreId = null AND p.tipo = :tipo ");
+        query.setParameter("tipo", tipo);
         return query.list();
     }
 

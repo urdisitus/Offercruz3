@@ -11,7 +11,7 @@ import bo.com.offercruz.entidades.Perfil;
 import bo.com.offercruz.entidades.Usuario;
 import bo.com.offercruz.utils.MailHelper;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 
 /**
  *
@@ -19,7 +19,7 @@ import javax.faces.bean.RequestScoped;
  */
 
 @ManagedBean
-@RequestScoped
+@SessionScoped
 public class UsuarioBean extends  BeanGenerico<Usuario, IUsuarioBO>{
     private int idPerfil;
 

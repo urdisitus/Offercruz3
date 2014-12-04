@@ -11,7 +11,7 @@ package bo.com.offercruz.enums;
  * @author Ernesto
  */
 public enum TipoUsuario {
-    OFFERCRUZ, EMPRESA , CLIENTE;
+    OFFERCRUZ, EMPRESA;
     
        @Override
     public String toString() {

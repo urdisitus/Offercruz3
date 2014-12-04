@@ -13,10 +13,11 @@ import bo.com.offercruz.entidades.Permiso;
 import bo.com.offercruz.utils.MyTreeNode;
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.HashSet;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.TreeNode;
@@ -26,12 +27,12 @@ import org.primefaces.model.TreeNode;
  * @author Ernesto
  */
 @ManagedBean
-@RequestScoped
+@SessionScoped
 public class PerfilBean extends BeanGenerico<Perfil, IPerfilBO> {
 
     private TreeNode[] selectedNodes;
     private TreeNode raizPermisos;
-    private Perfil permisosSeleccionado;
+    private Perfil perfilSeleccionado;
 
     /**
      * Creates a new instance of RolBean
@@ -71,11 +72,11 @@ public class PerfilBean extends BeanGenerico<Perfil, IPerfilBO> {
     }
 
     public void setPermisosSeleccionado(Perfil permisosSeleccionado) {
-        this.permisosSeleccionado = permisosSeleccionado;
+        this.perfilSeleccionado = permisosSeleccionado;
     }
 
     public Perfil getPermisosSeleccionado() {
-        return permisosSeleccionado;
+        return perfilSeleccionado;
     }
 
     @Override
@@ -83,16 +84,27 @@ public class PerfilBean extends BeanGenerico<Perfil, IPerfilBO> {
         return "perfil";
     }
 
+    @Override
+    protected void preInsertar(Perfil entidad) {
+        IPermisoBO permisoBo = FactoriaObjetosNegocio.getInstance().getIPermisoBO();
+        permisoBo.setComandoPermiso(getComandoPermiso());
+        permisoBo.setIdUsuario(getLoginBean().getCurrentUser().getId());
+        entidad.getPermisos().add(permisoBo.recuperarPorId(3000));
+    }
+
     public void guardarPermisos() {
         RequestContext context = RequestContext.getCurrentInstance();
         FacesMessage msg;
         boolean guardo = true;
-        List<Permiso> listaPermisos = new ArrayList<Permiso>();
+        Set<Permiso> listaPermisos = new HashSet<Permiso>();
         for (int i = 0; i < raizPermisos.getChildCount(); i++) {
             marcarPermisoR(raizPermisos.getChildren().get(i), listaPermisos);
         }
         try {
-            //  getObjetoNegocio().guardarPermisos(listaPermisos);   
+            if (perfilSeleccionado != null) {
+                perfilSeleccionado.setPermisos(listaPermisos);
+            }
+            getObjetoNegocio().actualizar(perfilSeleccionado);
         } catch (Exception e) {
             guardo = false;
             System.out.println(e);
@@ -107,19 +119,23 @@ public class PerfilBean extends BeanGenerico<Perfil, IPerfilBO> {
 
     }
 
-    public boolean marcarPermisoR(TreeNode node, List<Permiso> lista) {
+    public boolean marcarPermisoR(TreeNode node, Set<Permiso> lista) {
         Permiso rp = (Permiso) ((MyTreeNode) node).getRealData();
         if (node.isLeaf()) {
             //Es Hoja
             boolean valor = treeNodeMarcado(node);
-            lista.add(rp);
+            if (valor) {
+                lista.add(rp);
+            }
             return valor;
         } else {
             boolean valor = false;
             for (int i = 0; i < node.getChildCount(); i++) {
                 valor = marcarPermisoR(node.getChildren().get(i), lista) || valor;
             }
-            lista.add(rp);
+            if (valor) {
+                lista.add(rp);
+            }
             return valor;
         }
     }
@@ -134,22 +150,22 @@ public class PerfilBean extends BeanGenerico<Perfil, IPerfilBO> {
     }
 
     public void seleccionarPerfilPermisos(Perfil entidad) {
-        this.permisosSeleccionado = entidad;
+        this.perfilSeleccionado = entidad;
         crearArbolPermisos(entidad);
     }
 
     private void crearArbolPermisos(Perfil perfil) {
         IPermisoBO permisosBO = FactoriaObjetosNegocio.getInstance().getIPermisoBO();
-        List<Permiso> raiz = permisosBO.getPermisosRaiz();
+        List<Permiso> raiz = permisosBO.getPermisosRaiz(perfil.getTipo());
         //System.out.println("Longitud de la lista " + raiz.size());
         raizPermisos = new MyTreeNode("raiz", null);
         //raizPermisos.setExpanded(true);                
         for (Permiso permiso : raiz) {
             TreeNode treeControlTotal = new MyTreeNode(permiso, raizPermisos);
             treeControlTotal.setExpanded(true);
-            CrearPermisosR(permiso, treeControlTotal, perfil.getPermisos());
+            CrearPermisosR(permiso, treeControlTotal, perfil.getPermisos(), perfil.getTipo());
         }
-        
+
 //        
 //        treeControlTotal.setExpanded(true);
 //        
@@ -157,22 +173,22 @@ public class PerfilBean extends BeanGenerico<Perfil, IPerfilBO> {
 //        CrearPermisosR(raiz.get(0), treeControlTotal, perfil.getPermisos());
     }
 
-    private void CrearPermisosR(Permiso padre, TreeNode treePadre, Set<Permiso> perfilPermisos) {
+    private void CrearPermisosR(Permiso padre, TreeNode treePadre, Set<Permiso> perfilPermisos, int tipo) {
         IPermisoBO permisosBO = FactoriaObjetosNegocio.getInstance().getIPermisoBO();
         //List<Permiso> todos = permisosBO.obtenerTodos();
-        List<Permiso> hijos = permisosBO.getPermisosHijos(padre.getId());
+        List<Permiso> hijos = permisosBO.obtenerPermisosHijosPorTipo(padre.getId(), tipo);
         TreeNode node;
         for (Permiso rolPermiso : hijos) {
             node = new MyTreeNode(rolPermiso, treePadre);
             node.setExpanded(true);
             for (Permiso per : perfilPermisos) {
-                if(per.getId().intValue() == rolPermiso.getId().intValue()){
+                if (per.getId().intValue() == rolPermiso.getId().intValue()) {
                     rolPermiso.setValor(true);
                     break;
                 }
             }
             node.setSelected(rolPermiso.isValor());
-            CrearPermisosR(rolPermiso, node, perfilPermisos);
+            CrearPermisosR(rolPermiso, node, perfilPermisos, tipo);
         }
     }
 
