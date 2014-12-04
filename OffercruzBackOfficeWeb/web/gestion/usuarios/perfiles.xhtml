@@ -73,7 +73,7 @@
                                 <h:outputText value="Tipo Usuario" />  
                                 <p:selectOneMenu value="#{perfilBean.entidad.tipo}" style="width:300px" >  
                                     <f:selectItem itemLabel="- Seleccionar -" itemValue="0" />  
-                                    <f:selectItems var="tipoUsuario" value="#{tipoUsuario.obtenerTodos()}"
+                                    <f:selectItems var="tipoUsuario" value="#{tipoUsuarioBean.obtenerTodos()}"
                                                    itemLabel="#{tipoUsuario}" itemValue="#{tipoUsuarioBean.obtenerTipoUsuario(tipoUsuario)}"/>  
                                 </p:selectOneMenu>
 
