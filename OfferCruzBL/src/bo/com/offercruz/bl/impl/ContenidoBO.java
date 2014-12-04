@@ -9,6 +9,7 @@ import bo.com.offercruz.bl.contratos.IContenidoBO;
 import bo.com.offercruz.bl.excepticiones.BusinessExceptionMessage;
 import bo.com.offercruz.dal.contrato.IContenidoDAO;
 import bo.com.offercruz.entidades.Contenido;
+import bo.com.offercruz.entidades.Oferta;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
@@ -75,9 +76,14 @@ public class ContenidoBO extends GestionEmpresaBO<Contenido, Integer, IContenido
 //        if (entity.getImagens().isEmpty()) {
 //            appendException(new BusinessExceptionMessage("Usd. debe agregar una o mas imagenes al contenido.", "imagenes"));
 //        }
-//        if (entity.getOfertas().isEmpty()) {
-//            appendException(new BusinessExceptionMessage("Usd. debe agregar una o mas ofertas al contenido.", "ofertas"));
-//        }
+        if (!entity.getOfertas().isEmpty()) {
+            for (Object object : entity.getOfertas()) {
+                Oferta f = (Oferta)object;
+                int id = getDaoManager().getOfertaDAO().getIdPorNombre(f.getNombre());
+                f.setId(id);
+            }
+        }
+        
     }
 
     @Override
