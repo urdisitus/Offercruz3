@@ -26,6 +26,9 @@
                     </p:submenu>
                     <p:submenu rendered="#{loginBean.loggedIn}" label="Gesti&oacute;n de empresa">                        
                     </p:submenu>
+                    <p:submenu rendered="#{loginBean.loggedIn}" label="Gesti&oacute;n de oferta">                        
+                        <p:menuitem rendered="#{loginBean.verificarPermiso(7000)}"  value="Contenido"  url="/gestion/ofertas/contenidos.xhtml" />
+                    </p:submenu>
                     <p:menuitem value="Iniciar Sesi&oacute;n" rendered="#{!loginBean.loggedIn}"  url="/login.xhtml" />
                     <p:menuitem value="Cerrar Sesi&oacute;n" rendered="#{loginBean.loggedIn}" url="/closelogin.xhtml"/>
                 </p:menubar>  

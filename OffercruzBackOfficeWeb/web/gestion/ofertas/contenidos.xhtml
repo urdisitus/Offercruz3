@@ -47,7 +47,9 @@
                                 <h:outputText value="#{contenidoBean.parseDate(entidad.fechaExpiracion)}" />  
                             </p:column>  
                             <p:column style="width:25%; text-align: center">                                  
-
+                                <p:commandButton  update=":frmContenido:dlgContenido" oncomplete="PF('dlgContenido').show()" 
+                                                  actionListener="#{contenidoBean.seleccionarEntidad(entidad)}"
+                                                  icon="icon-edit" title="Editar"/>
                                 <p:commandButton  actionListener="#{contenidoBean.inicializarLista(entidad)}"
                                                   update=":frmOfertas:dlgOfertas" 
                                                   oncomplete="PF('dlgOfertas').show()" 
@@ -55,6 +57,7 @@
                             </p:column> 
                         </p:dataTable>
                     </h:form>
+
                     <h:form id="frmContenido">
                         <p:dialog header="#{contenidoBean.tituloForm()}" widgetVar="dlgContenido" resizable="false" showEffect="fade" hideEffect="explode" modal="true" id="dlgContenido">  
                             <p:scrollPanel style="height:450px; width: 450px" mode="native"> 
@@ -68,6 +71,13 @@
                                     <p:inputText  label="Descripci&oacute;n" id="descripcion" 
                                                   value="#{contenidoBean.entidad.descripcion}" 
                                                   style="width: 300px" /> 
+                                    <h:outputText value="Tipo contenido" />  
+                                    <p:selectOneMenu value="#{contenidoBean.entidad.tipoContenido}" style="width:300px" >  
+                                        <f:selectItem itemLabel="- Seleccionar -" itemValue="0" />  
+                                        <f:selectItems var="tipo" value="#{tipoContenidoBean.obtenerTodos()}"
+                                                       itemLabel="#{tipo}" itemValue="#{tipoContenidoBean.obtenerTipoUsuario(tipo)}"/>  
+                                    </p:selectOneMenu>
+
                                     <p:panelGrid columns="2">
                                         <h:outputText value="Fecha publicacion" />  
                                         <p:calendar id="fechapub" value="#{contenidoBean.entidad.fechaPublicacion}" mode="inline" />
@@ -78,14 +88,17 @@
 
                             </p:scrollPanel>
                             <p:separator/>
-                            <p:commandButton value="Guardar"  actionListener="#{contenidoBean.guardar()}" oncomplete="handleSaveRequest(xhr, status, args)" update=":growl" icon="icon-save"/>  
+                            <p:commandButton value="Guardar"  actionListener="#{contenidoBean.guardar()}" oncomplete="handleSaveRequest(xhr, status, args)" update=":growl, :lista" icon="icon-save"/>  
                             <p:commandButton value="Cancelar" onclick="PF('dlgContenido').hide();" ajax="false" type="button" icon="icon-cancel"/>  
                         </p:dialog>
                     </h:form>
-                    
+
                     <h:form id="frmOfertas">
-                        <p:dialog header="Ofertas" widgetVar="dlgOfertas" resizable="false" showEffect="fade" hideEffect="explode" modal="true" id="dlgOfertas">  
-                            <p:pickList id="pickList" value="#{contenidoBean.ofertas}" var="oferta" itemLabel="#{oferta}" itemValue="#{oferta}" />
+                        <p:dialog header="Ofertas" widgetVar="dlgOfertas" resizable="false" showEffect="fade" hideEffect="explode" modal="true" id="dlgOfertas">
+
+                            <p:pickList id="pickList" value="#{contenidoBean.ofertas}" var="oferta" itemLabel="#{oferta}" itemValue="#{oferta}" >
+                                <f:facet name="sourceCaption">Disponibles</f:facet>
+                                <f:facet name="targetCaption">Actuales</f:facet></p:pickList>
                             <p:separator/>
                             <p:commandButton value="Guardar"  actionListener="#{contenidoBean.guardarOfertas()}" oncomplete="handleSaveRequestOfertas(xhr, status, args)" update=":growl" icon="icon-save"/>  
                             <p:commandButton value="Cancelar" onclick="PF('dlgOfertas').hide();" ajax="false" type="button" icon="icon-cancel"/>  
@@ -98,8 +111,8 @@
                         t.focus();
                         t.select();
                     }
-                    
-                     function handleSaveRequestOfertas(xhr, status, args) {
+
+                    function handleSaveRequestOfertas(xhr, status, args) {
                         if (args.validationFailed || !args.guardo) {
                             jQuery('#dlgOfertas').effect("shake", {times: 3}, 100);
                         }

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:metadata>
+        <f:event type="preRenderView" listener="true" />
+    </f:metadata>
+    <h:head>
+        <title>Gestionar ofertas</title>
+    </h:head>
+    <h:body>
+        <ui:decorate template="../../template/layout.xhtml">            
+            <ui:define name="content">
+                <h2 style="text-align: center">
+                    Gestión de ofertas
+                </h2>
+                <p:messages id="growl"  autoUpdate="true" showDetail="true" closable="true" />
+                <h:form id="botones">
+                    <p:commandButton   
+                        actionListener="#{ofertaBean.abrirDialog()}"
+                        update=":frmOferta:dlgOferta" oncomplete="PF('dlgOferta').show()"  
+                        value="Adicionar" id="add"  icon="icon-add">                    
+                    </p:commandButton>
+                </h:form>
+                <br/>
+                <h:panelGrid columns="1" columnClasses="topAligned" width="100%" cellpadding="5">
+                    <h:form id="lista">
+                        <p:dataTable emptyMessage="No se han encontrado registros" var="entidad" 
+                                     value="#{ofertaBean.obtenerTodos()}"
+                                     binding="#{tabla}" style="width: 100%; text-align: center" >
+                            <p:column headerText="#"  style="width: 10%">  
+                                <h:outputText value="#{tabla.rowIndex + 1}" />  
+                            </p:column>  
+                            <p:column headerText="Nombre" style="width: 50%" >  
+                                <h:outputText value="#{entidad.nombre}" />  
+                            </p:column>                               
+                            <p:column headerText="Descripcion" style="width: 50%" >  
+                                <h:outputText value="#{entidad.descripcion}" />  
+                            </p:column>   
+                            <p:column headerText="Categoria" style="width: 50%" >  
+                                <h:outputText value="#{entidad.categoria.nombre}" />  
+                            </p:column>  
+                            <p:column headerText="Precio" style="width: 50%" >  
+                                <h:outputText value="#{entidad.precioUnitario}" />  
+                            </p:column>  
+                            <p:column style="width:25%; text-align: center">                                  
+                                <p:commandButton  update=":frmOferta:dlgOferta" oncomplete="PF('dlgOferta').show()" 
+                                                  actionListener="#{ofertaBean.seleccionarEntidad(entidad)}"
+                                                  icon="icon-edit" title="Editar"/>
+                            </p:column> 
+                        </p:dataTable>
+                    </h:form>
+                    <h:form id="frmOferta" >
+                        <p:dialog header="#{ofertaBean.tituloForm()}" widgetVar="dlgOferta" resizable="false" showEffect="fade" hideEffect="explode" modal="true" id="dlgOferta" style="left: 540.5px; width: 600px">  
+                            <p:scrollPanel style="height:450px; width: 400px" mode="native"> 
+                                <p:panelGrid columns="1">
+                                    <h:outputText value="Nombre" />  
+                                    <p:inputText  label="Nombre" id="nombre" value="#{ofertaBean.entidad.nombre}" 
+                                                  style="width: 300px" /> 
+                                    <h:outputText value="Descripcion" />  
+                                    <p:inputTextarea rows="2" cols="50" value="#{ofertaBean.entidad.descripcion}" maxlength="100" counterTemplate="{0} Caracteres restantes." 
+                                                     autoResize="true" style="width: 350px; resize: none" />
+                                    <h:outputText value="Precio" />  
+                                    <p:inputText  label="Precio" id="precio" value="#{ofertaBean.entidad.precioUnitario}" 
+                                                  style="width: 200px" /> 
+                                    <h:outputText value="Categoria" />  
+                                    <p:selectOneMenu value="#{ofertaBean.idCategoria}" style="width:300px" >  
+                                        <f:selectItem itemLabel="- Seleccionar -" itemValue="0" />  
+                                        <f:selectItems var="categoria" value="#{ofertaBean.obtenerEmpresaCategorias()}"
+                                                       itemLabel="#{categoria.nombre}" itemValue="#{categoria.id}"/>  
+                                    </p:selectOneMenu>
+                                    <h:outputText value="Tipo" />  
+                                    <p:selectOneMenu value="#{ofertaBean.entidad.tipoOferta}" style="width:300px" >  
+                                        <f:selectItem itemLabel="- Seleccionar -" itemValue="0" />  
+                                        <f:selectItems var="tipo" value="#{tipoOfertaBean.obtenerTodos()}"
+                                                       itemLabel="#{tipo.toString()}" itemValue="#{tipoOfertaBean.obtenerTipoOferta(tipo)}"/>  
+                                    </p:selectOneMenu>
+                                    <h:outputText value="Imagen" /> 
+                                    <p:fileUpload fileUploadListener="#{ofertaBean.handleFileUpload}" mode="advanced"
+                                                  auto="true" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                                    <p:graphicImage cache="false" id="imagemTmp" value="#{ofertaBean.imagem}" height="300" style="margin: 0 auto;"/>
+                                </p:panelGrid>
+                            </p:scrollPanel>
+                            <p:separator/>
+
+                            <p:commandButton value="Guardar"  actionListener="#{ofertaBean.guardar()}" oncomplete="handleSaveRequest(xhr, status, args)" update=":growl, :lista" icon="icon-save"/>  
+                            <p:commandButton value="Cancelar" onclick="PF('dlgOferta').hide();" ajax="false" type="button" icon="icon-cancel"/>  
+                        </p:dialog>
+                    </h:form>
+                </h:panelGrid >
+                <script type="text/javascript">
+                    function foco() {
+                        var t = document.getElementById('main:descripcion');
+                        t.focus();
+                        t.select();
+                    }
+
+                    function handleSaveRequest(xhr, status, args) {
+                        if (args.validationFailed || !args.guardo) {
+                            jQuery('#dlgOferta').effect("shake", {times: 3}, 100);
+                        }
+                        else {
+                            PF('dlgOferta').hide();
+                        }
+                    }
+                </script> 
+            </ui:define>
+        </ui:decorate>
+    </h:body>
+</html>
