@@ -103,8 +103,8 @@ public class PerfilBean extends BeanGenerico<Perfil, IPerfilBO> {
         try {
             if (perfilSeleccionado != null) {
                 perfilSeleccionado.setPermisos(listaPermisos);
-            }
-            getObjetoNegocio().actualizar(perfilSeleccionado);
+                getObjetoNegocio().actualizar(perfilSeleccionado);
+            }            
         } catch (Exception e) {
             guardo = false;
             System.out.println(e);
